@@ -1,0 +1,5 @@
+vi:
+  jwt_auth:
+    errors:
+      missing_token: Thiếu mã xác thực
+      invalid_token: Mã xác thực không hợp lệ

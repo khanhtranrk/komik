@@ -11,7 +11,7 @@ AllCops:
     - db/**/*
     - vendor/**/*
     - config/**/*
-    - lib/**/*
+    - lib/tasks/**/*
     - app/channels/**/*
     - test/**/*
     - config/environments/*

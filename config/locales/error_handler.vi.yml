@@ -1,0 +1,4 @@
+vi:  
+  error_handler:
+    server_error: Máy chủ đang gặp sự cố, xin hãy thử lại sau!
+    not_found: Không tìm thấy tài nguyên được yêu cầu!

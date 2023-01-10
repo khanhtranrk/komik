@@ -1,0 +1,19 @@
+vi:
+  activerecord:
+    attributes:
+      user:
+        username: Tên đăng nhập
+        email: Email
+        password: Mật khẩu
+        password_confirmation: Mật khẩu nhập lại
+        birthday: Sinh nhật
+        firstname: Tên người dùng
+        lastname: Họ người dùng
+    errors:
+      format: "%{attribute} %{message}"
+      messages:
+        blank: không thể để trắng
+        taken: đã tồn tại
+        improbable_phone: là một số không hợp lệ
+        required: phải tồn tại
+        same_old_password: đã trùng với mật khẩu cũ
