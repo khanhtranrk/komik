@@ -1,0 +1,20 @@
+version: "3.3"
+services:
+  web:
+    image: komik
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/komik
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - LANG=en_US.UTF-8
+      - RACK_ENV=production
+      - RAILS_ENV=production
+      - RAILS_LOG_TO_STDOUT=enabled
+      - RAILS_SERVE_STATIC_FILES=enabled
+      - SECRET_KEY_BASE=5234b33089ccb586829ec90bd33251b77d813d71d574e4a5010df31faf31b0b3fd1fa7bd9bbf66566d6395fda4ea4e92261daf1b9c010ad969e4c39954ec0721
