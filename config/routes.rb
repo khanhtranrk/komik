@@ -9,6 +9,11 @@ Rails.application.routes.draw do
           post :refresh
         end
       end
+
+      namespace :app do
+        resources :categories, only: %i[index]
+        resources :commics, only: %i[index show]
+      end
     end
   end
 end
