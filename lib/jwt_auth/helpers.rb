@@ -8,19 +8,25 @@ module JwtAuth
     end
 
     def refresh!
-      token = request.headers['Authorization']&.split('Bearer ')&.last
+      access_token = request.headers['Authorization']&.split('Bearer ')&.last
       refresh_token = request.headers['Refresh-Token']
 
-      raise JwtAuth::Errors::MissingToken, I18n.t('jwt_auth.errors.missing_token') unless token
+      raise JwtAuth::Errors::MissingToken, I18n.t('jwt_auth.errors.missing_token') unless access_token
 
-      decoded_token = JwtAuth::JsonWebToken.decode(token)
+      decoded_token = JwtAuth::JsonWebToken.decode(access_token, verify: false)
 
-      token_exists = RefreshToken.exists?(user_id: decoded_token[:user_id], token: refresh_token)
+      refrezh_token = RefreshToken.find_by(
+        'user_id = ? AND token = ? AND expire_at > NOW()',
+        decoded_token[:user_id], refresh_token
+      )
 
-      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') unless token_exists
+      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') unless refrezh_token
 
-      access_token = JwtAuth::Issuer.access_token(decoded_token[:user_id])
-      { access_token: }
+      refrezh_token.destroy!
+
+      access_token, refresh_token = JwtAuth::Issuer.access_and_refresh_token(decoded_token[:user_id])
+
+      { access_token:, refresh_token: }
     end
 
     def logout!

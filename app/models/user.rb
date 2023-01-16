@@ -7,18 +7,10 @@ class User < ApplicationRecord
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :username, :email, uniqueness: true
-  validates :firstname,
-            :lastname,
-            :birthday,
-            :username,
+  validates :username,
             :email,
             :password,
-            :password_confirmation,
             presence: true
 
-  REQUIRED_ATTRIBUTES = %i[
-    firstname lastname birthday
-    username email
-    password password_confirmation
-  ].freeze
+  REQUIRED_ATTRIBUTES = %i[username email password].freeze
 end
