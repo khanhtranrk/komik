@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class App::Commics::ManySerializer < ActiveModel::Serializer
+class App::Comics::ManySerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :other_names,
@@ -8,5 +8,6 @@ class App::Commics::ManySerializer < ActiveModel::Serializer
              :status,
              :views,
              :likes,
-             :description
+             :description,
+             :image_url
 end

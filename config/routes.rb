@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
       namespace :app do
         resources :categories, only: %i[index]
-        resources :commics, only: %i[index show]
+        resources :comics, only: %i[index show]
       end
     end
   end

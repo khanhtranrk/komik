@@ -6,7 +6,7 @@ module ResponseFormatters
       total_objects = collection.count
 
       page = (options[:page] || params[:page] || 1).to_i
-      per_page = [(options[:per_page] || params[:per_page] || total_objects).to_i, 1].min
+      per_page = [(options[:per_page] || params[:per_page] || total_objects).to_i, 1].max
       root = options[:root] || collection.klass.name.tableize
 
       resource = collection.paginate(page:, per_page:)
@@ -23,7 +23,7 @@ module ResponseFormatters
       resp_data[:message] = options[:message] || :OK
       resp_data[:data] = {
         "#{root}": data,
-        paginate: { total_pages:, total_objects: }
+        paginate: { page:, per_page:, total_pages:, total_objects: }
       }
 
       render json: resp_data, status: :ok
