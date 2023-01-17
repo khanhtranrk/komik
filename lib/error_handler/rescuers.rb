@@ -9,7 +9,7 @@ module ErrorHandler
         expose_error(
           status: :internal_server_error,
           key: :SERVER_ERROR,
-          message: I18n.t('handler.server_error'),
+          message: I18n.t('error_handler.server_error'),
           debug: e.message
         )
       end
@@ -18,7 +18,7 @@ module ErrorHandler
         expose_error(
           status: :not_found,
           key: :NOT_FOUND,
-          message: I18n.t('handler.not_found'),
+          message: I18n.t('error_handler.not_found'),
           debug: e.message
         )
       end
@@ -40,7 +40,23 @@ module ErrorHandler
       end
 
       # jwt_auth
-      rescue_from JwtAuth::Errors::MissingToken, JwtAuth::Errors::InvalidToken do |e|
+      rescue_from JwtAuth::Errors::MissingToken do |e|
+        expose_error(
+          status: :bad_request,
+          key: :PARAMETER_MISSING,
+          message: e.message
+        )
+      end
+
+      rescue_from JwtAuth::Errors::InvalidToken do |e|
+        expose_error(
+          status: :unprocessable_entity,
+          key: :BAD_PARAMETER,
+          message: e.message
+        )
+      end
+
+      rescue_from JwtAuth::Errors::Unauthorized do |e|
         expose_error(
           status: :unauthorized,
           key: :UNAUTHORIZED,

@@ -11,7 +11,7 @@ module JwtAuth
       access_token = request.headers['Authorization']&.split('Bearer ')&.last
       refresh_token = request.headers['Refresh-Token']
 
-      raise JwtAuth::Errors::MissingToken, I18n.t('jwt_auth.errors.missing_token') unless access_token
+      raise JwtAuth::Errors::MissingToken, I18n.t('jwt_auth.errors.missing_token') unless access_token || refresh_token
 
       decoded_token = JwtAuth::JsonWebToken.decode(access_token, verify: false)
 
