@@ -6,6 +6,6 @@ class Api::V1::App::ChaptersController < ApplicationController
                      .find(params[:id])
 
     expose chapter,
-           serializer: App::Chapters::OneSerializer
+           serializer: App::ChapterSerializer
   end
 end

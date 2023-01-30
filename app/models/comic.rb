@@ -4,9 +4,8 @@ class Comic < ApplicationRecord
   has_many :comics_categories, dependent: :delete_all
   has_many :categories, through: :comics_categories
   has_many :chapters, dependent: :delete_all
-  has_one :image, as: :imageable, dependent: :delete
-
-  delegate :url, to: :image, prefix: true, allow_nil: true
+  has_many :likes, dependent: :delete_all
+  has_many :follows, dependent: :delete_all
 
   class << self
     def filter(params)

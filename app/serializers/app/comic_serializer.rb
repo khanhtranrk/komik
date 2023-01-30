@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class App::Comics::OneSerializer < ActiveModel::Serializer
+class App::ComicSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :other_names,
@@ -9,21 +9,21 @@ class App::Comics::OneSerializer < ActiveModel::Serializer
              :views,
              :likes,
              :description,
-             :image_url,
+             :image,
              :categories,
              :chapters
 
   def categories
     ActiveModelSerializers::SerializableResource.new(
       object.categories,
-      each_serializer: App::Categories::ManySerializer
+      each_serializer: App::CategoriesSerializer
     )
   end
 
   def chapters
     ActiveModelSerializers::SerializableResource.new(
       object.chapters,
-      each_serializer: App::Chapters::ManySerializer
+      each_serializer: App::ChaptersSerializer
     )
   end
 end

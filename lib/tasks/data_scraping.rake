@@ -19,7 +19,7 @@ namespace :data_scraping do
     end
   end
 
-  def scraping_commic(url:, category_schema: nil)
+  def scraping_comic(url:, category_schema: nil)
     uri = URI.parse(url)
     response = Net::HTTP.get_response(uri)
     html = response.body
@@ -31,7 +31,7 @@ namespace :data_scraping do
     img_e = info_e.css('img').first
 
     comic[:name] = info_e.css('img').first['alt']
-    comic[:image] = Image.new(url: "https://#{info_e.css('img').first['src'][2..-1]}")
+    comic[:image] = "https://#{info_e.css('img').first['src'][2..-1]}"
 
     comic[:other_names] = info_e.css('.other-name').first
     comic[:other_names] = comic[:other_names]? comic[:other_names].text : ''
@@ -50,7 +50,7 @@ namespace :data_scraping do
       comic[:category_ids] = comic[:category_ids].compact
     end
 
-    comic[:description] = doc.css('.detail-content').first.css('p').text
+    comic[:description] = doc.css('.detail-content').first.css('p').text.strip
     comic[:chapters] = doc.css('.list-chapter').first.css('li').map do |e|
       Chapter.new(
         name: e.css('a').first.text,
@@ -65,7 +65,7 @@ namespace :data_scraping do
     comic
   end
 
-  def scraping_commics(page: 1, category_schema: nil)
+  def scraping_comics(page: 1, category_schema: nil)
     url = "https://www.nettruyenup.com/tim-truyen?page=#{page}"
     uri = URI.parse(url)
 
@@ -79,17 +79,17 @@ namespace :data_scraping do
     item_elements = items_element.css('.item')
 
     for item_element in item_elements
-      comics << scraping_commic(url: item_element.css('a').first['href'], category_schema: category_schema)
+      comics << scraping_comic(url: item_element.css('a').first['href'], category_schema: category_schema)
     end
 
     comics
   end
 
-  def scraping_commics_pages(pages:, category_schema: nil)
+  def scraping_comics_pages(pages:, category_schema: nil)
     comics = []
 
     for page in pages
-      comics.concat(scraping_commics(page: page, category_schema: category_schema))
+      comics.concat(scraping_comics(page: page, category_schema: category_schema))
     end
 
     comics
@@ -100,11 +100,11 @@ namespace :data_scraping do
     Category.import(scaping_categories)
   end
 
-  task commics: :environment do
+  task comics: :environment do
     category_schema = Category.all.map { |c| [c[:name], c[:id]] }
     category_schema = category_schema.to_h
 
-    comics = scraping_commics_pages(pages: 1..10, category_schema: category_schema)
+    comics = scraping_comics_pages(pages: 1..10, category_schema: category_schema)
 
     for c in comics
       Comic.create!(c)

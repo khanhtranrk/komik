@@ -1,6 +1,6 @@
 require "test_helper"
 
-class CommicsCategoryTest < ActiveSupport::TestCase
+class Api::V1::App::UsersControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

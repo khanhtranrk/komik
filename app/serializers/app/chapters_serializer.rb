@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class App::Chapters::ManySerializer < ActiveModel::Serializer
+class App::ChaptersSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :posted_at,

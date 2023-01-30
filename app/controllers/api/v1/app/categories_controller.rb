@@ -3,6 +3,6 @@
 class Api::V1::App::CategoriesController < ApplicationController
   def index
     expose Category.all,
-           each_serializer: App::Categories::ManySerializer
+           each_serializer: App::CategoriesSerializer
   end
 end

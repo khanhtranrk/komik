@@ -12,8 +12,22 @@ Rails.application.routes.draw do
 
       namespace :app do
         resources :categories, only: %i[index]
-        resources :comics, only: %i[index show]
         resources :chapters, only: %i[show]
+
+        resource :user, only: %i[show update] do
+          collection do
+            put :change_login_info
+          end
+        end
+
+        resources :comics, only: %i[index show] do
+          member do
+            post :like
+            post :unlike
+            post :follow
+            post :unfollow
+          end
+        end
       end
     end
   end

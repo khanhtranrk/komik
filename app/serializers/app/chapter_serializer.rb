@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class App::Chapters::OneSerializer < ActiveModel::Serializer
+class App::ChapterSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :posted_at,
@@ -10,7 +10,7 @@ class App::Chapters::OneSerializer < ActiveModel::Serializer
   def images
     ActiveModelSerializers::SerializableResource.new(
       object.images,
-      each_serializer: App::Images::SelfSerializer
+      each_serializer: App::ImageSerializer
     )
   end
 end
