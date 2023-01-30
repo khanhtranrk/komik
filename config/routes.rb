@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       namespace :app do
         resources :categories, only: %i[index]
         resources :chapters, only: %i[show]
+        resources :plans, only: %i[index]
 
         resource :user, only: %i[show update] do
           collection do

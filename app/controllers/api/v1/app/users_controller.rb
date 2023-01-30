@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::App::UsersController < ApplicationController
   def show
     expose @current_user,
@@ -11,7 +13,7 @@ class Api::V1::App::UsersController < ApplicationController
   end
 
   def change_login_info
-    raise Errors::BadParameter, t(:wrong_password) unless @current_user.authenticate(login_info_params[:password]);
+    raise Errors::BadParameter, t(:wrong_password) unless @current_user.authenticate(login_info_params[:password])
 
     @current_user.update!(
       login_info_params.merge(password: login_info_params[:new_password])
