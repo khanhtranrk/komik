@@ -4,7 +4,9 @@ class Api::V1::App::ComicsController < ApplicationController
   before_action :set_comic, except: %i[index show]
 
   def index
-    paginate Comic.filter(params),
+    comics = Comic.filter(params)
+
+    paginate comics,
              each_serializer: App::ComicsSerializer
   end
 
@@ -13,7 +15,8 @@ class Api::V1::App::ComicsController < ApplicationController
                   .find(params[:id])
 
     expose commic,
-           serializer: App::ComicSerializer
+           serializer: App::ComicSerializer,
+           current_user: @current_user
   end
 
   def like

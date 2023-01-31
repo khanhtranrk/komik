@@ -10,4 +10,8 @@ class App::ComicsSerializer < ActiveModel::Serializer
              :likes,
              :description,
              :image
+
+  def likes
+    0
+  end
 end

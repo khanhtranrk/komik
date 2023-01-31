@@ -3,7 +3,7 @@
 module ResponseFormatters
   module Paginator
     def paginate(collection, options = {})
-      total_objects = collection.count
+      total_objects = collection.count('*')
 
       page = (options[:page] || params[:page] || 1).to_i
       per_page = [(options[:per_page] || params[:per_page] || total_objects).to_i, 1].max

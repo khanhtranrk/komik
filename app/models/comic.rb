@@ -7,6 +7,10 @@ class Comic < ApplicationRecord
   has_many :likes, dependent: :delete_all
   has_many :follows, dependent: :delete_all
 
+  def liked_by?(user)
+    likes.exists?(user:)
+  end
+
   class << self
     def filter(params)
       comics = all
@@ -28,7 +32,7 @@ class Comic < ApplicationRecord
       if params[:sort_by].present?
         sort_by = params[:sort_by].split(',').map { |t| t.split('-') }
         sort_by = sort_by.select { |t| t[0].in?(%w[views likes updated_at]) && t[1].in?(%w[asc desc]) }
-        sort_by = sort_by.map { |t| "#{t[0]} #{t[1]}" }
+        sort_by = sort_by.map { |t| "comics.#{t[0]} #{t[1]}" }
 
         comics = comics.order(sort_by.join(', '))
       end

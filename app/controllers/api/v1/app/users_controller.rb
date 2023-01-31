@@ -3,13 +3,24 @@
 class Api::V1::App::UsersController < ApplicationController
   def show
     expose @current_user,
-           serializer: App::UserProfileSerializer
+           serializer: App::UserProfileSerializer,
+           base_url: request.base_url
   end
 
   def update
     @current_user.update!(user_params)
 
-    expose
+    expose @current_user,
+           serializer: App::UserProfileSerializer,
+           base_url: request.base_url
+  end
+
+  def upload_avatar
+    @current_user.update!(upload_avatar_params)
+
+    expose @current_user,
+           serializer: App::UserProfileSerializer,
+           base_url: request.base_url
   end
 
   def change_login_info
@@ -20,10 +31,16 @@ class Api::V1::App::UsersController < ApplicationController
                        .except(:new_password)
     )
 
-    expose
+    expose @current_user,
+           serializer: App::UserProfileSerializer,
+           base_url: request.base_url
   end
 
   private
+
+  def upload_avatar_params
+    params.permit(:avatar)
+  end
 
   def user_params
     params.require(:user)

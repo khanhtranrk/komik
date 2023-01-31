@@ -13,6 +13,20 @@ class App::ComicSerializer < ActiveModel::Serializer
              :categories,
              :chapters
 
+  attribute :liked, if: :current_user?
+
+  def current_user?
+    @instance_options[:current_user].present?
+  end
+
+  def liked
+    object.liked_by?(@instance_options[:current_user])
+  end
+
+  def likes
+    0
+  end
+
   def categories
     ActiveModelSerializers::SerializableResource.new(
       object.categories,

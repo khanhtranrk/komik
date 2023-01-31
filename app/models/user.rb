@@ -3,6 +3,8 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_one_attached :avatar
+
   has_many :refresh_tokens, dependent: :delete_all
   has_many :likes, dependent: :delete_all
   has_many :follows, dependent: :delete_all

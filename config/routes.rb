@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
         resource :user, only: %i[show update] do
           collection do
+            put :upload_avatar
             put :change_login_info
           end
         end
