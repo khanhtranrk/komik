@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::App::ComicsController < ApplicationController
-  before_action :set_comic, except: %i[index show]
+  before_action :set_comic, except: %i[index show liked followed]
 
   def index
     comics = Comic.filter(params)
@@ -11,10 +11,10 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def show
-    commic = Comic.includes(:categories, :chapters)
-                  .find(params[:id])
+    comic = Comic.includes(:categories, :chapters)
+                 .find(params[:id])
 
-    expose commic,
+    expose comic,
            serializer: App::ComicSerializer,
            current_user: @current_user
   end
@@ -43,6 +43,20 @@ class Api::V1::App::ComicsController < ApplicationController
           .destroy
 
     expose
+  end
+
+  def liked
+    comics = Comic.where(id: @current_user.likes.pluck(:comic_id))
+
+    paginate comics,
+             each_serializer: App::ComicsSerializer
+  end
+
+  def followed
+    comics = Comic.where(id: @current_user.follows.pluck(:comic_id))
+
+    paginate comics,
+             each_serializer: App::ComicsSerializer
   end
 
   private

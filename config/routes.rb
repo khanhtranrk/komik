@@ -29,6 +29,11 @@ Rails.application.routes.draw do
             post :follow
             post :unfollow
           end
+
+          collection do
+            get :liked
+            get :followed
+          end
         end
       end
     end
