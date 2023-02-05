@@ -6,9 +6,18 @@ class Comic < ApplicationRecord
   has_many :chapters, dependent: :delete_all
   has_many :likes, dependent: :delete_all
   has_many :follows, dependent: :delete_all
+  has_many :reading_chapters, dependent: :delete_all
 
   def liked_by?(user)
     likes.exists?(user:)
+  end
+
+  def followed_by?(user)
+    follows.exists?(user:)
+  end
+
+  def reading_chapter_by(user)
+    reading_chapters.find_by(user:)
   end
 
   class << self

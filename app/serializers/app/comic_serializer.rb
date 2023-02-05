@@ -14,6 +14,8 @@ class App::ComicSerializer < ActiveModel::Serializer
              :chapters
 
   attribute :liked, if: :current_user?
+  attribute :followed, if: :current_user?
+  attribute :reading_chapter, if: :current_user?
 
   def current_user?
     @instance_options[:current_user].present?
@@ -21,6 +23,19 @@ class App::ComicSerializer < ActiveModel::Serializer
 
   def liked
     object.liked_by?(@instance_options[:current_user])
+  end
+
+  def followed
+    object.followed_by?(@instance_options[:current_user])
+  end
+
+  def reading_chapter
+    ActiveModelSerializers::SerializableResource.new(
+      object.reading_chapter_by(@instance_options[:current_user]).chapter,
+      each_serializer: App::ChaptersSerializer
+    )
+  rescue StandardError
+    nil
   end
 
   def likes

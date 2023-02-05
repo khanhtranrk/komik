@@ -5,6 +5,17 @@ class Api::V1::App::ChaptersController < ApplicationController
     chapter = Chapter.includes(:images)
                      .find(params[:id])
 
+    # rubocop:disable Rails/SkipsModelValidations
+    ReadingChapter.upsert(
+      {
+        chapter_id: chapter.id,
+        user_id: @current_user.id,
+        comic_id: chapter.comic_id
+      },
+      unique_by: %i[user_id comic_id]
+    )
+    # rubocop:enable Rails/SkipsModelValidations
+
     expose chapter,
            serializer: App::ChapterSerializer
   end
