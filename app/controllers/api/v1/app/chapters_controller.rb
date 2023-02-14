@@ -5,6 +5,8 @@ class Api::V1::App::ChaptersController < ApplicationController
     chapter = Chapter.includes(:images)
                      .find(params[:id])
 
+    raise Errors::PermissionDenied, t(:permission_denied) if !chapter.free && @current_user.current_plan.nil?
+
     # rubocop:disable Rails/SkipsModelValidations
     ReadingChapter.upsert(
       {

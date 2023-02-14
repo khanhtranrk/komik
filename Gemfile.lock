@@ -89,6 +89,10 @@ GEM
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     diff-lcs (1.5.0)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     e2mmap (0.1.0)
     erubi (1.12.0)
     ffi (1.15.5)
@@ -219,6 +223,7 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
+    stripe (8.2.0)
     thor (1.2.1)
     tilt (2.0.11)
     timeout (0.3.1)
@@ -243,6 +248,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   debug
+  dotenv-rails
   image_processing (>= 1.2)
   jwt
   pg (~> 1.1)
@@ -253,6 +259,7 @@ DEPENDENCIES
   rubocop
   rubocop-rails
   solargraph
+  stripe
   tzinfo-data
   will_paginate (~> 3.1.0)
 

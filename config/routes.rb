@@ -22,6 +22,12 @@ Rails.application.routes.draw do
           end
         end
 
+        resources :purchases, only: %i[index] do
+          collection do
+            post :card
+          end
+        end
+
         resources :comics, only: %i[index show] do
           member do
             post :like

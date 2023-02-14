@@ -17,10 +17,12 @@ gem 'rack-cors'
 gem 'rails', '~> 7.0.4'
 gem 'rails-i18n'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'stripe'
 gem 'will_paginate', '~> 3.1.0'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
+  gem 'dotenv-rails'
   gem 'rubocop'
   gem 'rubocop-rails'
 end
