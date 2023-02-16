@@ -1,0 +1,3 @@
+shared:
+  sidekig_retry: 10
+  sidekig_backtrace: 20

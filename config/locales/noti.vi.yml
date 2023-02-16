@@ -1,0 +1,6 @@
+vi:
+  noti:
+    message_templates:
+      default:
+        title: Thông báo
+        body: Đây là thông báo mặc định

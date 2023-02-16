@@ -3,8 +3,7 @@
 module JwtAuth
   module Helpers
     def login!(user)
-      access_token, refresh_token = JwtAuth::Issuer.access_and_refresh_token(user)
-      { access_token:, refresh_token: }
+      JwtAuth::LoginHelper.create_login!(user.id)
     end
 
     def refresh!
@@ -15,26 +14,27 @@ module JwtAuth
 
       decoded_token = JwtAuth::JsonWebToken.decode(access_token, verify: false)
 
-      refrezh_token = RefreshToken.find_by(
-        'user_id = ? AND token = ? AND expire_at > NOW()',
-        decoded_token[:user_id], refresh_token
-      )
+      login = Login.find_by(user_id: decoded_token[:user_id], token: refresh_token, access_token:)
 
-      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') unless refrezh_token
+      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if !login
 
-      refrezh_token.destroy!
+      if login.expire_at < Time.zone.now
+        login.destroy!
+        raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token')
+      end
 
-      access_token, refresh_token = JwtAuth::Issuer.access_and_refresh_token(decoded_token[:user_id])
-
-      { access_token:, refresh_token: }
+      JwtAuth::LoginHelper.update_login!(login)
     end
 
     def logout!
-      token = request.headers['Refresh-Token']
       user = @current_user
+      token = request.headers['Refresh-Token']
 
-      RefreshToken.find_by!(user:, token:)
-                  .destroy!
+      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if token.blank?
+
+      Login.find_by!(user:, token:)
+           .destroy!
+
       nil
     end
   end

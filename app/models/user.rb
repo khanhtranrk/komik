@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :follows, dependent: :delete_all
   has_many :reading_chapters, dependent: :delete_all
   has_many :purchases, dependent: :delete_all
+  has_many :logins, dependent: :delete_all
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :username, :email, uniqueness: true

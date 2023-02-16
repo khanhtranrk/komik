@@ -8,7 +8,12 @@ class Api::V1::AuthController < ApplicationController
   def sign_up
     user = User.create!(user_params.merge!(role: 1, birthday: '2001-01-01'))
 
-    expose login!(user)
+    login = login!(user)
+
+    update_login_device!(login)
+
+    expose refresh_token: login.token,
+           access_token: login.access_token
   end
 
   def sign_in
@@ -16,18 +21,38 @@ class Api::V1::AuthController < ApplicationController
 
     raise Errors::Unauthorized, t(:invalid_sign_in_info) unless user&.authenticate(params[:password])
 
-    expose login!(user)
+    login = login!(user)
+
+    update_login_device!(login)
+
+    expose refresh_token: login.token,
+           access_token: login.access_token
   end
 
   def sign_out
-    expose logout!
+    logout!
+    expose
   end
 
   def refresh
-    expose refresh!
+    login = refresh!
+
+    update_login_device!(login)
+
+    expose refresh_token: login.token,
+           access_token: login.access_token
   end
 
   private
+
+  def update_login_device!(login)
+    if request.headers['Exponent-Token']
+      Device.upsert({login_id: login.id, exponent_token: request.headers['Exponent-Token']}, unique_by: %i[exponent_token])
+    else
+      device = login.device
+      device.destroy! if device
+    end
+  end
 
   def user_params
     params.permit(User::REQUIRED_ATTRIBUTES)

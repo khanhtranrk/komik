@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_11_164621) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_15_194634) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,7 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_11_164621) do
 
   create_table "chapters", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "posted_at", default: "2023-02-13 07:47:26"
+    t.datetime "posted_at", default: "2023-02-09 10:05:45"
     t.boolean "free", default: false
     t.bigint "comic_id", null: false
     t.index ["comic_id"], name: "index_chapters_on_comic_id"
@@ -77,6 +77,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_11_164621) do
     t.index ["category_id", "comic_id"], name: "index_comics_categories_on_category_id_and_comic_id", unique: true
   end
 
+  create_table "devices", force: :cascade do |t|
+    t.bigint "login_id", null: false
+    t.string "exponent_token", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exponent_token"], name: "index_devices_on_exponent_token", unique: true
+  end
+
   create_table "follows", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "comic_id", null: false
@@ -94,6 +102,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_11_164621) do
     t.bigint "user_id", null: false
     t.bigint "comic_id", null: false
     t.index ["user_id", "comic_id"], name: "index_likes_on_user_id_and_comic_id", unique: true
+  end
+
+  create_table "logins", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "token", null: false
+    t.string "access_token", null: false
+    t.datetime "expire_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "token"], name: "index_logins_on_user_id_and_token", unique: true
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.jsonb "message", null: false
+    t.boolean "seen", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "plans", force: :cascade do |t|
