@@ -7,8 +7,8 @@ module Noti
     def initialize(**args)
       path = "noti.message_templates.#{args[:template] || 'default'}"
 
-      @title = I18n.t("#{path}.title", **args)
-      @body = I18n.t("#{path}.body", **args)
+      @title = I18n.translate("#{path}.title", **args)
+      @body = I18n.translate("#{path}.body", **args)
 
       @title = args[:title] if args[:title]
       @body = args[:body] if args[:body]

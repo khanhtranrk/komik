@@ -14,6 +14,13 @@ Rails.application.routes.draw do
         resources :categories, only: %i[index]
         resources :chapters, only: %i[show]
         resources :plans, only: %i[index]
+        resources :notifications, only: %i[index]
+        resources :documents, only: %[] do
+          collection do
+            get :policy_and_terms
+            get :introduction
+          end
+        end
 
         resource :user, only: %i[show update] do
           collection do

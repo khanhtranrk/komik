@@ -2,7 +2,10 @@ class Api::V1::App::PurchasesController < ApplicationController
   before_action :validate_purchase!, only: %i[card]
 
   def index
-    paginate @current_user.purchases,
+    purchases = @current_user.purchases
+                             .order(created_at: :desc)
+
+    paginate purchases,
              each_serializer: App::PurchaseSerializer
   end
 
@@ -33,6 +36,15 @@ class Api::V1::App::PurchasesController < ApplicationController
     purchase.update!(
       effective_date: current_time,
       expiry_date: current_time + plan.value.hours,
+    )
+
+    # send notify
+    Notify::PushJob.perform_later(
+      @current_user,
+      Noti::Message.new(
+        template: 'payment.successful',
+        plan_name: plan.name
+      ).as_json
     )
 
     expose

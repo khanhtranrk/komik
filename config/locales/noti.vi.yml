@@ -4,3 +4,7 @@ vi:
       default:
         title: Thông báo
         body: Đây là thông báo mặc định
+      payment:
+        successful:
+          title: Thông báo
+          body: "Bạn vừa đăng kí thành công gói %{plan_name}"
