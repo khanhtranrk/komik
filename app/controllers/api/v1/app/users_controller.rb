@@ -26,10 +26,16 @@ class Api::V1::App::UsersController < ApplicationController
   def change_login_info
     raise Errors::BadParameter, t(:wrong_password) unless @current_user.authenticate(login_info_params[:password])
 
-    @current_user.update!(
-      login_info_params.merge(password: login_info_params[:new_password])
-                       .except(:new_password)
-    )
+    if login_info_params[:new_password]
+      @current_user.update!(
+        login_info_params.merge(password: login_info_params[:new_password])
+                         .except(:new_password)
+      )
+    else
+      @current_user.update!(
+        login_info_params.except(:new_password, :password)
+      )
+    end
 
     expose @current_user,
            serializer: App::UserProfileSerializer,

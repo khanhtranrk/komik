@@ -27,10 +27,16 @@ module JwtAuth
     end
 
     def logout!
-      user = @current_user
-      token = request.headers['Refresh-Token']
+      access_token = request.headers['Authorization']&.split('Bearer ')&.last
+      refresh_token = request.headers['Refresh-Token']
 
-      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if token.blank?
+      raise JwtAuth::Errors::MissingToken, I18n.t('jwt_auth.errors.missing_token') unless access_token || refresh_token
+
+      decoded_token = JwtAuth::JsonWebToken.decode(access_token, verify: false)
+
+      login = Login.find_by(user_id: decoded_token[:user_id], token: refresh_token, access_token:)
+
+      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if !login
 
       Login.find_by!(user:, token:)
            .destroy!

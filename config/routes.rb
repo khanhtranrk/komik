@@ -7,6 +7,8 @@ Rails.application.routes.draw do
           post :sign_in
           post :sign_out
           post :refresh
+          post :send_verification_code
+          post :reset_password
         end
       end
 
@@ -15,6 +17,13 @@ Rails.application.routes.draw do
         resources :chapters, only: %i[show]
         resources :plans, only: %i[index]
         resources :notifications, only: %i[index]
+
+        resources :searchings, only: %i[index] do
+          collection do
+            get :suggest_keywords
+          end
+        end
+
         resources :documents, only: %[] do
           collection do
             get :policy_and_terms

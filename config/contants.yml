@@ -1,3 +1,5 @@
 shared:
   sidekig_retry: 10
   sidekig_backtrace: 20
+  verification_code_expiration: 300
+  verification_code_length: 6

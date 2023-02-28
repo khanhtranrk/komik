@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Api::V1::AuthController < ApplicationController
-  skip_before_action :authenticate!, except: %i[sign_out]
-
   include JwtAuth::Helpers
 
   def sign_up
@@ -41,6 +39,22 @@ class Api::V1::AuthController < ApplicationController
 
     expose refresh_token: login.token,
            access_token: login.access_token
+  end
+
+  def send_verification_code
+    user = User.find_by(email: params[:email])
+    raise Errors::BadParameter, t(:email_not_found) unless user
+
+    VerificationHelper::send_code_to(user)
+  end
+
+  def reset_password
+    user = User.find_by(email: params[:email])
+    raise Errors::BadParameter, t(:verification_code_invalid) unless VerificationHelper::code_valid(user, params[:verification_code])
+
+    user.update!(password: params[:password])
+
+    expose
   end
 
   private
