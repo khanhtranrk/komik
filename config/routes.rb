@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         resources :chapters, only: %i[show]
         resources :plans, only: %i[index]
         resources :notifications, only: %i[index]
+        resources :feedbacks, only: %i[create]
 
         resources :searchings, only: %i[index] do
           collection do

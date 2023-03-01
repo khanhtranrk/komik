@@ -38,7 +38,7 @@ module JwtAuth
 
       raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if !login
 
-      Login.find_by!(user:, token:)
+      Login.find_by!(user: login.user, token: refresh_token)
            .destroy!
 
       nil

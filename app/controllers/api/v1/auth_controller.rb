@@ -2,6 +2,9 @@
 
 class Api::V1::AuthController < ApplicationController
   include JwtAuth::Helpers
+  include VerificationHelper
+
+  skip_before_action :authenticate!
 
   def sign_up
     user = User.create!(user_params.merge!(role: 1, birthday: '2001-01-01'))
@@ -45,12 +48,14 @@ class Api::V1::AuthController < ApplicationController
     user = User.find_by(email: params[:email])
     raise Errors::BadParameter, t(:email_not_found) unless user
 
-    VerificationHelper::send_code_to(user)
+    send_verification_code_to(user)
+
+    expose
   end
 
   def reset_password
     user = User.find_by(email: params[:email])
-    raise Errors::BadParameter, t(:verification_code_invalid) unless VerificationHelper::code_valid(user, params[:verification_code])
+    raise Errors::BadParameter, t(:verification_code_invalid) unless verification_code_valid?(user, params[:verification_code])
 
     user.update!(password: params[:password])
 
