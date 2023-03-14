@@ -56,6 +56,7 @@ Rails.application.routes.draw do
           collection do
             get :liked
             get :followed
+            get :read
           end
         end
       end

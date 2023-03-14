@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::App::ComicsController < ApplicationController
-  before_action :set_comic, except: %i[index show liked followed]
+  before_action :set_comic, except: %i[index show liked followed read]
 
   def index
     comics = Comic.filter(params)
@@ -54,6 +54,14 @@ class Api::V1::App::ComicsController < ApplicationController
 
   def followed
     comics = Comic.where(id: @current_user.follows.pluck(:comic_id))
+
+    paginate comics,
+             each_serializer: App::ComicsSerializer
+  end
+
+  def read
+    comics = Comic.where(id: @current_user.reading_chapters.pluck(:comic_id))
+                  .order(updated_at: :desc)
 
     paginate comics,
              each_serializer: App::ComicsSerializer
