@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_28_195851) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_23_141129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,14 +50,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_28_195851) do
 
   create_table "chapters", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "posted_at", default: "2023-02-09 10:05:45"
+    t.datetime "posted_at", default: "2023-03-23 15:23:23"
     t.boolean "free", default: false
     t.bigint "comic_id", null: false
     t.index ["comic_id"], name: "index_chapters_on_comic_id"
   end
 
   create_table "comics", force: :cascade do |t|
-    t.string "image"
     t.string "name", null: false
     t.string "other_names", default: ""
     t.string "author", default: ""
@@ -67,6 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_28_195851) do
     t.text "description", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_updated_chapter_at"
   end
 
   create_table "comics_categories", force: :cascade do |t|

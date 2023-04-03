@@ -7,7 +7,8 @@ class Api::V1::App::ComicsController < ApplicationController
     comics = Comic.filter(params)
 
     paginate comics,
-             each_serializer: App::ComicsSerializer
+             each_serializer: App::ComicsSerializer,
+             base_url: request.base_url
   end
 
   def show
@@ -16,18 +17,23 @@ class Api::V1::App::ComicsController < ApplicationController
 
     expose comic,
            serializer: App::ComicSerializer,
-           current_user: @current_user
+           current_user: @current_user,
+           base_url: request.base_url
   end
 
   def like
-    Like.create(comic: @comic, user: @current_user)
+    Like.create!(comic: @comic, user: @current_user)
+
+    @comic.update(likes: @comic.likes + 1)
 
     expose
   end
 
   def unlike
     Like.find_by!(comic: @comic, user: @current_user)
-        .destroy
+        .destroy!
+
+    @comic.update(likes: @comic.likes - 1)
 
     expose
   end
@@ -46,17 +52,19 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def liked
-    comics = Comic.where(id: @current_user.likes.pluck(:comic_id))
+    comics = Comic.where(id: Like.where(user_id: @current_user.id).pluck(:comic_id))
 
     paginate comics,
-             each_serializer: App::ComicsSerializer
+             each_serializer: App::ComicsSerializer,
+             base_url: request.base_url
   end
 
   def followed
-    comics = Comic.where(id: @current_user.follows.pluck(:comic_id))
+    comics = Comic.where(id: Follow.where(user_id: @current_user.id).pluck(:comic_id))
 
     paginate comics,
-             each_serializer: App::ComicsSerializer
+             each_serializer: App::ComicsSerializer,
+             base_url: request.base_url
   end
 
   def read
@@ -64,7 +72,8 @@ class Api::V1::App::ComicsController < ApplicationController
                   .order(updated_at: :desc)
 
     paginate comics,
-             each_serializer: App::ComicsSerializer
+             each_serializer: App::ComicsSerializer,
+             base_url: request.base_url
   end
 
   private

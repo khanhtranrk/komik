@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class App::ComicsSerializer < ActiveModel::Serializer
+class Admin::ComicsSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :other_names,

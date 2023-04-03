@@ -2,23 +2,21 @@
 
 class Api::V1::App::ChaptersController < ApplicationController
   def show
-    chapter = Chapter.includes(:images)
-                     .find(params[:id])
+    chapter = Chapter.includes(images_attachments: :blob).find(params[:id])
 
     raise Errors::PermissionDenied, t(:permission_denied) if !chapter.free && @current_user.current_plan.nil?
 
-    # rubocop:disable Rails/SkipsModelValidations
-    ReadingChapter.upsert(
-      {
-        chapter_id: chapter.id,
-        user_id: @current_user.id,
-        comic_id: chapter.comic_id
-      },
-      unique_by: %i[user_id comic_id]
-    )
-    # rubocop:enable Rails/SkipsModelValidations
+    reading_chapter = ReadingChapter.find_by(user_id: @current_user.id, comic_id: chapter.comic_id);
+
+    if reading_chapter
+      reading_chapter.update!(chapter_id: chapter.id)
+    else
+      ReadingChapter.create!(user_id: @current_user.id, comic_id: chapter.comic_id, chapter_id: chapter.id)
+      chapter.comic.update!(views: chapter.comic.views + 1)
+    end
 
     expose chapter,
-           serializer: App::ChapterSerializer
+           serializer: App::ChapterSerializer,
+           base_url: request.base_url
   end
 end

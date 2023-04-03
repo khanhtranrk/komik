@@ -6,7 +6,7 @@ module ResponseFormatters
       total_objects = collection.count('*')
 
       page = (options[:page] || params[:page] || 1).to_i
-      per_page = [(options[:per_page] || params[:per_page] || total_objects).to_i, 1].max
+      per_page = [(options[:per_page] || params[:per_page] || [total_objects, 20].min).to_i, 1].max
       root = options[:root] || collection.klass.name.tableize
 
       resource = collection.paginate(page:, per_page:)

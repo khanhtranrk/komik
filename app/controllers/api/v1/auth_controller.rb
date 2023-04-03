@@ -7,27 +7,29 @@ class Api::V1::AuthController < ApplicationController
   skip_before_action :authenticate!
 
   def sign_up
-    user = User.create!(user_params.merge!(role: 1, birthday: '2001-01-01'))
+    user = User.create!(user_params.merge!(role: 0, birthday: '2001-01-01'))
 
     login = login!(user)
 
     update_login_device!(login)
 
     expose refresh_token: login.token,
-           access_token: login.access_token
+           access_token: login.access_token,
+           role: user.role
   end
 
   def sign_in
-    user = User.find_by!('username = ? or email = ?', params[:username_or_email], params[:username_or_email])
+    user = User.find_by('username = ? or email = ?', params[:username_or_email], params[:username_or_email])
 
-    raise Errors::Unauthorized, t(:invalid_sign_in_info) unless user&.authenticate(params[:password])
+    raise Errors::BadParameter, t(:invalid_sign_in_info) unless user&.authenticate(params[:password])
 
     login = login!(user)
 
     update_login_device!(login)
 
     expose refresh_token: login.token,
-           access_token: login.access_token
+           access_token: login.access_token,
+           role: user.role
   end
 
   def sign_out
@@ -41,7 +43,8 @@ class Api::V1::AuthController < ApplicationController
     update_login_device!(login)
 
     expose refresh_token: login.token,
-           access_token: login.access_token
+           access_token: login.access_token,
+           role: login.user.role
   end
 
   def send_verification_code

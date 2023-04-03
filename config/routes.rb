@@ -12,6 +12,21 @@ Rails.application.routes.draw do
         end
       end
 
+      namespace :admin do
+        resources :comics do
+          member do
+            put :upload_image
+          end
+
+          resources :chapters do
+            member do
+              put :upload_images
+            end
+          end
+        end
+        resources :categories
+      end
+
       namespace :app do
         resources :categories, only: %i[index]
         resources :chapters, only: %i[show]

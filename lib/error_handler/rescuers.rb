@@ -64,6 +64,14 @@ module ErrorHandler
         )
       end
 
+      rescue_from JwtAuth::Errors::PermissionDenied do |e|
+        expose_error(
+          status: :forbidden,
+          key: :PERMISSION_DENIED,
+          message: e.message
+        )
+      end
+
       # using to raise errors
       rescue_from Errors::ServerError do |e|
         expose_error(
