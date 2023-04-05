@@ -7,6 +7,8 @@ class Comic < ApplicationRecord
   has_many :categories, through: :comics_categories
   has_many :chapters, dependent: :delete_all
   has_many :reading_chapters, dependent: :delete_all
+  has_many :likez, class_name: 'Like', inverse_of: :comic, dependent: :delete_all
+  has_many :followz, class_name: 'Follow', inverse_of: :comic, dependent: :delete_all
 
   def liked_by?(user)
     Like.exists?(user:, comic_id: id)

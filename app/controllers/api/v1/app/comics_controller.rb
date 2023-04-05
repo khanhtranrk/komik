@@ -52,7 +52,7 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def liked
-    comics = Comic.where(id: Like.where(user_id: @current_user.id).pluck(:comic_id))
+    comics = Comic.where(id: @current_user.likes.pluck(:comic_id))
 
     paginate comics,
              each_serializer: App::ComicsSerializer,
@@ -60,7 +60,7 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def followed
-    comics = Comic.where(id: Follow.where(user_id: @current_user.id).pluck(:comic_id))
+    comics = Comic.where(id: @current_user.follows.pluck(:comic_id))
 
     paginate comics,
              each_serializer: App::ComicsSerializer,
