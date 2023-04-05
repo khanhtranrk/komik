@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+class Admin::FeedbacksSerializer < ActiveModel::Serializer
+  attributes :id,
+             :title,
+             :content,
+             :created_at,
+             :user
+
+  def user
+    ActiveModelSerializers::SerializableResource.new(
+      object.user,
+      serializer: App::ChaptersSerializer,
+      base_url: @instance_options[:base_url]
+    )
+  end
+end

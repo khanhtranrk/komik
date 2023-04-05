@@ -24,8 +24,10 @@ Rails.application.routes.draw do
             end
           end
         end
+
         resources :categories
         resources :plans
+        resources :feedbacks, only: %i[index]
       end
 
       namespace :app do

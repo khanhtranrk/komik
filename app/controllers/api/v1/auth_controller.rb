@@ -68,11 +68,18 @@ class Api::V1::AuthController < ApplicationController
   private
 
   def update_login_device!(login)
-    if login.device.present?
-      login.device.update!(exponent_token: request.headers['Exponent-Token'])
-    else
-      Device.create!(login_id: login.id, exponent_token: request.headers['Exponent-Token'])
-    end
+    return unless request.headers['Exponent-Token']
+
+    Device.where(
+      'exponent_token = ? or login_id = ?',
+      request.headers['Exponent-Token'],
+      login.id
+    ).delete_all
+
+    Device.create!(
+      exponent_token: request.headers['Exponent-Token'],
+      login_id: login.id
+    )
   end
 
   def user_params
