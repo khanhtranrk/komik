@@ -28,6 +28,7 @@ Rails.application.routes.draw do
         resources :categories
         resources :plans
         resources :feedbacks, only: %i[index]
+        resources :users, only: %i[index show create update]
       end
 
       namespace :app do

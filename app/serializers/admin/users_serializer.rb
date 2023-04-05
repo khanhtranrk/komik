@@ -6,7 +6,9 @@ class Admin::UsersSerializer < ActiveModel::Serializer
              :firstname,
              :lastname,
              :birthday,
-             :role
+             :role,
+             :avatar_url,
+             :locked
 
   def avatar_url
     @instance_options[:base_url] + Rails.application.routes.url_helpers.rails_blob_url(object.avatar, only_path: true) if object.avatar.attached?
