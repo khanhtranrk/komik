@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::Admin::UsersController < AdministratorController
   before_action :set_user, except: %i[index create]
 
