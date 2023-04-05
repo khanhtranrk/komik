@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::Admin::ComicsController < AdministratorController
   before_action :set_comic, except: %i[index create show]
 

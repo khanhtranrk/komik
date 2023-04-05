@@ -20,6 +20,6 @@ class Notify::PushJob < ApplicationJob
     end
 
     # store message
-    Notification.create(user: user, message: message) unless options.try(:store_message) == false
+    Notification.create(user:, message:) unless options.try(:store_message) == false
   end
 end

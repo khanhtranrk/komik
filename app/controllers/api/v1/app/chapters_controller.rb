@@ -6,7 +6,7 @@ class Api::V1::App::ChaptersController < ApplicationController
 
     raise Errors::PermissionDenied, t(:permission_denied) if !chapter.free && @current_user.current_plan.nil?
 
-    reading_chapter = ReadingChapter.find_by(user_id: @current_user.id, comic_id: chapter.comic_id);
+    reading_chapter = ReadingChapter.find_by(user_id: @current_user.id, comic_id: chapter.comic_id)
 
     if reading_chapter
       reading_chapter.update!(chapter_id: chapter.id)

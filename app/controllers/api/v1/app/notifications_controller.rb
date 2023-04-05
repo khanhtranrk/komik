@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::App::NotificationsController < ApplicationController
   def index
     notificaitons = @current_user.notifications

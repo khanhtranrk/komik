@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::Admin::ChaptersController < AdministratorController
   before_action :set_comic
   before_action :set_chapter, except: %i[index create]

@@ -68,11 +68,10 @@ class Api::V1::AuthController < ApplicationController
   private
 
   def update_login_device!(login)
-    if request.headers['Exponent-Token']
-      Device.upsert({login_id: login.id, exponent_token: request.headers['Exponent-Token']}, unique_by: %i[exponent_token])
+    if login.device.present?
+      login.device.update!(exponent_token: request.headers['Exponent-Token'])
     else
-      device = login.device
-      device.destroy! if device
+      Device.create!(login_id: login.id, exponent_token: request.headers['Exponent-Token'])
     end
   end
 

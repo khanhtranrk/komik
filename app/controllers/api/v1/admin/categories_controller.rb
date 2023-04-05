@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::Admin::CategoriesController < AdministratorController
   before_action :set_category, except: %i[index create]
 
@@ -13,7 +15,7 @@ class Api::V1::Admin::CategoriesController < AdministratorController
   end
 
   def create
-    category = Category.create! category_params
+    Category.create!(category_params)
 
     expose
   end

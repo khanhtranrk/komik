@@ -15,12 +15,12 @@ module JwtAuth
     def create_login!(user_id)
       token = generate_refresh_token
       access_token = JwtAuth::JsonWebToken.encode(user_id)
-      Login.create!(user_id:, token:, access_token:, expire_at:);
+      Login.create!(user_id:, token:, access_token:, expire_at:)
     end
 
     def update_login!(login)
       access_token = JwtAuth::JsonWebToken.encode(login.user_id)
-      login.update!(access_token:);
+      login.update!(access_token:)
       login
     end
   end

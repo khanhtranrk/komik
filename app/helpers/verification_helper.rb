@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module VerificationHelper
   extend ActiveSupport::Concern
 
@@ -7,7 +9,12 @@ module VerificationHelper
       expire_at = Time.zone.now + Rails.configuration.contants.verification_code_expiration.seconds
       user_id = user.id
 
-      Verification.upsert({user_id:, code:, expire_at:}, unique_by: :user_id)
+      if user.verification
+        user.verification.update!(code:, expire_at:)
+      else
+        Verification.create!(user_id:, code:, expire_at:)
+      end
+
       VerificationMailer.verify(user.email, code).deliver_later
     end
 

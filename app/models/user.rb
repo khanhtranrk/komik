@@ -5,6 +5,8 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
+  has_one :verification, dependent: :destroy
+
   has_many :refresh_tokens, dependent: :delete_all
   has_many :likes, dependent: :delete_all
   has_many :follows, dependent: :delete_all

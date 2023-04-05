@@ -23,7 +23,7 @@ module Noti
     end
 
     def send_to(tokens)
-      if tokens.kind_of?(Array)
+      if tokens.is_a?
         tokens.each_slice(BLOCK_SIZE) do |token_block|
           @request.body = message.merge(to: token_block).to_json
           @http.request(@request)

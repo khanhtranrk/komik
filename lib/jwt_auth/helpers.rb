@@ -16,7 +16,7 @@ module JwtAuth
 
       login = Login.find_by(user_id: decoded_token[:user_id], token: refresh_token, access_token:)
 
-      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if !login
+      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') unless login
 
       if login.expire_at < Time.zone.now
         login.destroy!
@@ -36,7 +36,7 @@ module JwtAuth
 
       login = Login.find_by(user_id: decoded_token[:user_id], token: refresh_token, access_token:)
 
-      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if !login
+      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') unless login
 
       Login.find_by!(user: login.user, token: refresh_token)
            .destroy!

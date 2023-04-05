@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::App::PurchasesController < ApplicationController
   before_action :validate_purchase!, only: %i[card]
 
@@ -35,7 +37,7 @@ class Api::V1::App::PurchasesController < ApplicationController
 
     purchase.update!(
       effective_date: current_time,
-      expiry_date: current_time + plan.value.hours,
+      expiry_date: current_time + plan.value.hours
     )
 
     # send notify
