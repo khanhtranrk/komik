@@ -24,7 +24,7 @@ class Comic < ApplicationRecord
 
   class << self
     def filter(params)
-      comics = all
+      comics = all.order(id: :asc)
 
       if params[:category_ids].present?
         category_ids = params[:category_ids].split(',').map(&:to_i)

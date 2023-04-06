@@ -10,7 +10,7 @@ class Admin::FeedbacksSerializer < ActiveModel::Serializer
   def user
     ActiveModelSerializers::SerializableResource.new(
       object.user,
-      serializer: App::ChaptersSerializer,
+      serializer: Admin::UsersSerializer,
       base_url: @instance_options[:base_url]
     )
   end
