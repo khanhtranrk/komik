@@ -8,7 +8,8 @@ class Api::V1::Admin::ChaptersController < AdministratorController
     chapters = Chapter.where(comic_id: @comic.id)
 
     paginate chapters,
-             each_serializer: Admin::ChaptersSerializer
+             each_serializer: Admin::ChaptersSerializer,
+             base_url: request.base_url
   end
 
   def show
@@ -21,6 +22,13 @@ class Api::V1::Admin::ChaptersController < AdministratorController
     Chapter.create!(chapter_params.merge(comic_id: @comic.id))
 
     @comic.update!(last_updated_chapter_at: Time.zone.now)
+
+    @comic.users_followed.send_notification(
+      Noti::Message.new(
+        template: 'comic.followed',
+        comic_name: @comic.name
+      ).as_json
+    )
 
     expose
   end

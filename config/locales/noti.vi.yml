@@ -12,3 +12,7 @@ vi:
           thank:
             title: Phản hồi
             body: "Cảm ơn bạn đã gửi phản hồi, chúng tôi sẽ cố gắng cải thiện dịch vụ tốt hơn trong tương lai"
+      comic:
+        followed:
+          title: "%{comic_name}"
+          body: "Đã có chương mới"

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
           resources :chapters do
             member do
               put :upload_images
+              put :active
             end
           end
         end
@@ -75,6 +76,7 @@ Rails.application.routes.draw do
           collection do
             get :liked
             get :followed
+            get :up_coming
             get :read
           end
         end

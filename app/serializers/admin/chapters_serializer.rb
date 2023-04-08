@@ -4,5 +4,12 @@ class Admin::ChaptersSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :posted_at,
-             :free
+             :free,
+             :image_urls
+
+  def image_urls
+    object.images.map do |image|
+      @instance_options[:base_url] + Rails.application.routes.url_helpers.rails_blob_url(image, only_path: true)
+    end
+  end
 end

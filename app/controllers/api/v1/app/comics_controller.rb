@@ -5,6 +5,8 @@ class Api::V1::App::ComicsController < ApplicationController
 
   def index
     comics = Comic.filter(params)
+                  .where(active: true)
+                  .where('comics.last_updated_chapter_at IS NOT NULL')
 
     paginate comics,
              each_serializer: App::ComicsSerializer,
@@ -13,7 +15,7 @@ class Api::V1::App::ComicsController < ApplicationController
 
   def show
     comic = Comic.includes(:categories, :chapters)
-                 .find(params[:id])
+                 .find_by!(id: params[:id], active: true)
 
     expose comic,
            serializer: App::ComicSerializer,
@@ -39,7 +41,7 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def follow
-    Follow.create(comic: @comic, user: @current_user)
+    Follow.create!(comic: @comic, user: @current_user)
 
     expose
   end
@@ -52,7 +54,8 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def liked
-    comics = Comic.where(id: @current_user.likes.pluck(:comic_id))
+    comics = Comic.where(id: @current_user.likes.pluck(:comic_id), active: true)
+                  .order(last_updated_chapter_at: :desc)
 
     paginate comics,
              each_serializer: App::ComicsSerializer,
@@ -60,7 +63,17 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def followed
-    comics = Comic.where(id: @current_user.follows.pluck(:comic_id))
+    comics = Comic.where(id: @current_user.follows.pluck(:comic_id), active: true)
+                  .order(last_updated_chapter_at: :desc)
+
+    paginate comics,
+             each_serializer: App::ComicsSerializer,
+             base_url: request.base_url
+  end
+
+  def up_coming
+    comics = Comic.where(active: true, last_updated_chapter_at: nil)
+                  .order(created_at: :desc)
 
     paginate comics,
              each_serializer: App::ComicsSerializer,
@@ -68,8 +81,8 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def read
-    comics = Comic.where(id: @current_user.reading_chapters.pluck(:comic_id))
-                  .order(updated_at: :desc)
+    comics = Comic.where(id: @current_user.reading_chapters.pluck(:comic_id), active: true)
+                  .order(last_updated_chapter_at: :desc)
 
     paginate comics,
              each_serializer: App::ComicsSerializer,
@@ -79,6 +92,6 @@ class Api::V1::App::ComicsController < ApplicationController
   private
 
   def set_comic
-    @comic = Comic.find(params[:id])
+    @comic = Comic.find_by(id: params[:id], active: true)
   end
 end

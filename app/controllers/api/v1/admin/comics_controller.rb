@@ -45,6 +45,12 @@ class Api::V1::Admin::ComicsController < AdministratorController
     expose
   end
 
+  def active
+    @comic.update!(active_params)
+
+    expose
+  end
+
   private
 
   def upload_image_params
@@ -55,6 +61,11 @@ class Api::V1::Admin::ComicsController < AdministratorController
     @comic = Comic.find(params[:id])
   end
 
+  def active_params
+    params.require(:comic)
+          .permit :active
+  end
+
   def comic_params
     params.require(:comic)
           .permit :name,
@@ -62,6 +73,7 @@ class Api::V1::Admin::ComicsController < AdministratorController
                   :author,
                   :status,
                   :description,
+                  :active,
                   category_ids: []
   end
 end

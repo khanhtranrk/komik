@@ -8,9 +8,9 @@ class Admin::ComicSerializer < ActiveModel::Serializer
              :status,
              :views,
              :likes,
+             :active,
              :description,
              :categories,
-             :chapters,
              :image_url
 
   def image_url
@@ -21,13 +21,6 @@ class Admin::ComicSerializer < ActiveModel::Serializer
     ActiveModelSerializers::SerializableResource.new(
       object.categories,
       each_serializer: App::CategoriesSerializer
-    )
-  end
-
-  def chapters
-    ActiveModelSerializers::SerializableResource.new(
-      object.chapters,
-      each_serializer: App::ChaptersSerializer
     )
   end
 end

@@ -8,6 +8,7 @@ class Admin::ComicsSerializer < ActiveModel::Serializer
              :status,
              :views,
              :likes,
+             :active,
              :description,
              :image_url
 

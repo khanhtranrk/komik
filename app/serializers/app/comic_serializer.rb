@@ -11,7 +11,8 @@ class App::ComicSerializer < ActiveModel::Serializer
              :description,
              :categories,
              :chapters,
-             :image_url
+             :image_url,
+             :up_coming
 
   attribute :liked, if: :current_user?
   attribute :followed, if: :current_user?
@@ -23,6 +24,10 @@ class App::ComicSerializer < ActiveModel::Serializer
 
   def current_user?
     @instance_options[:current_user].present?
+  end
+
+  def up_coming
+    object.last_updated_chapter_at.nil?
   end
 
   def liked

@@ -28,6 +28,10 @@ class User < ApplicationRecord
     purchases.find_by('NOW()::TIMESTAMP > effective_date::TIMESTAMP AND NOW()::TIMESTAMP < expiry_date::TIMESTAMP')
   end
 
+  def send_notification(message)
+    Notify::PushJob.perform_later([id], message)
+  end
+
   class << self
     def filter(params)
       users = all.order(id: :asc)
@@ -47,6 +51,10 @@ class User < ApplicationRecord
       end
 
       users
+    end
+
+    def send_notification(message)
+      Notify::PushJob.perform_later(ids, message)
     end
   end
 end

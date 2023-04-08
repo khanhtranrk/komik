@@ -41,8 +41,7 @@ class Api::V1::App::PurchasesController < ApplicationController
     )
 
     # send notify
-    Notify::PushJob.perform_later(
-      @current_user,
+    @current_user.send_notification(
       Noti::Message.new(
         template: 'payment.successful',
         plan_name: plan.name
