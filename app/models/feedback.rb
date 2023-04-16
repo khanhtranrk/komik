@@ -10,9 +10,9 @@ class Feedback < ApplicationRecord
       if params[:query].present?
         query = params[:query].strip
 
-        feedbacks = feedbacks.join(:user).where(
-          'user.username ILIKE ? OR user.email ILIKE ?',
-          "%#{query}%", "%#{query}%"
+        feedbacks = feedbacks.joins(:user).where(
+          'feedbacks.title ILIKE ? OR users.username ILIKE ? OR users.email ILIKE ?',
+          "%#{query}%", "%#{query}%", "%#{query}%"
         )
       end
 

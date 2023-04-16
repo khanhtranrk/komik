@@ -61,6 +61,7 @@ Rails.application.routes.draw do
 
         resources :purchases, only: %i[index] do
           collection do
+            get :stripe_key
             post :card
           end
         end

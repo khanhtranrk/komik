@@ -30,7 +30,8 @@ class Comic < ApplicationRecord
 
       if params[:category_ids].present?
         category_ids = params[:category_ids].split(',').map(&:to_i)
-        comics = comics.left_joins(:comics_categories).where(comics_categories: { category_id: category_ids })
+        comic_ids = ComicsCategory.where(category_id: category_ids).pluck(:comic_id)
+        comics = comics.where(id: comic_ids)
       end
 
       if params[:query].present?

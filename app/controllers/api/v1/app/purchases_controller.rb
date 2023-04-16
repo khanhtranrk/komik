@@ -3,6 +3,10 @@
 class Api::V1::App::PurchasesController < ApplicationController
   before_action :validate_purchase!, only: %i[card]
 
+  def stripe_key
+    expose key: ENV['STRIPE_PUBLISHABLE_KEY']
+  end
+
   def index
     purchases = @current_user.purchases
                              .order(created_at: :desc)
