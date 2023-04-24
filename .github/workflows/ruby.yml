@@ -25,5 +25,19 @@ jobs:
       run: ./bin/rails zeitwerk:check --trace
     - name: Run rubocop
       run: bundle exec rubocop
-    - name: Test
-      run: bundle exec rspec
+    - name: Set up PostgreSQL
+      uses: harmon758/postgresql-action@v1
+      with:
+        postgresql user: test
+        postgresql password: password
+    - name: Build app
+      run: |
+        bundle exec rails db:create RAILS_ENV=test
+        bundle exec rails db:migrate RAILS_ENV=test
+      env:
+        DATABASE_URL: 'postgres://test:password@localhost/komik_test'
+    - name: Run specs
+      run: |
+        bundle exec rspec
+      env:
+        DATABASE_URL: 'postgres://test:password@localhost/komik_test'
