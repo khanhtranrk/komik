@@ -24,10 +24,16 @@ gem 'will_paginate', '~> 3.1.0'
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
+  gem 'factory_bot_rails'
+  gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-rails'
 end
 
 group :development do
   gem 'solargraph'
+end
+
+group :test do
+  gem 'faker'
 end
