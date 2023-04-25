@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  include Notificationable
+
   has_secure_password
 
   has_one_attached :avatar
@@ -13,23 +15,19 @@ class User < ApplicationRecord
   has_many :reading_chapters, dependent: :delete_all
   has_many :purchases, dependent: :delete_all
   has_many :logins, dependent: :delete_all
-  has_many :notifications, dependent: :delete_all
   has_many :feedbacks, dependent: :delete_all
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :username, :email, uniqueness: true
   validates :username,
             :email,
+            :password,
             presence: true
 
   REQUIRED_ATTRIBUTES = %i[username email password].freeze
 
   def current_plan
     purchases.find_by('NOW()::TIMESTAMP > effective_date::TIMESTAMP AND NOW()::TIMESTAMP < expiry_date::TIMESTAMP')
-  end
-
-  def send_notification(message)
-    Notify::PushJob.perform_later([id], message)
   end
 
   class << self
@@ -51,10 +49,6 @@ class User < ApplicationRecord
       end
 
       users
-    end
-
-    def send_notification(message)
-      Notify::PushJob.perform_later(ids, message)
     end
   end
 end
