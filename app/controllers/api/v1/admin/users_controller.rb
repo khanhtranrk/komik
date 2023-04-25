@@ -6,6 +6,7 @@ class Api::V1::Admin::UsersController < AdministratorController
   def index
     users = User.filter(params)
                 .where('id != ?', @current_user.id)
+                .with_attached_avatar
 
     paginate users,
              each_serializer: Admin::UsersSerializer,

@@ -7,6 +7,7 @@ class Api::V1::App::ComicsController < ApplicationController
     comics = Comic.filter(params)
                   .where(active: true)
                   .where('comics.last_updated_chapter_at IS NOT NULL')
+                  .with_attached_image
 
     paginate comics,
              each_serializer: App::ComicsSerializer,

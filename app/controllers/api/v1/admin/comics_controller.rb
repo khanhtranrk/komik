@@ -5,6 +5,7 @@ class Api::V1::Admin::ComicsController < AdministratorController
 
   def index
     comics = Comic.filter(params)
+                  .with_attached_image
 
     paginate comics,
              each_serializer: Admin::ComicsSerializer,
