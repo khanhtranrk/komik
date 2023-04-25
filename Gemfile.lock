@@ -118,6 +118,18 @@ GEM
     json (2.6.3)
     jsonapi-renderer (0.2.2)
     jwt (2.6.0)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -270,7 +282,6 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    will_paginate (3.1.8)
     yard (0.9.28)
       webrick (~> 1.7.0)
     zeitwerk (2.6.6)
@@ -289,6 +300,7 @@ DEPENDENCIES
   faker
   image_processing (>= 1.2)
   jwt
+  kaminari
   pg (~> 1.1)
   puma (~> 5.0)
   rack-cors
@@ -301,7 +313,6 @@ DEPENDENCIES
   solargraph
   stripe
   tzinfo-data
-  will_paginate (~> 3.1.0)
 
 RUBY VERSION
    ruby 3.1.3p185
