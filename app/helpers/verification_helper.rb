@@ -15,7 +15,7 @@ module VerificationHelper
         Verification.create!(user_id:, code:, expire_at:)
       end
 
-      VerificationMailer.verify(user.email, code).deliver_later
+      VerificationMailer.verify(user.email, code).deliver_now
     end
 
     def verification_code_valid?(user, code)

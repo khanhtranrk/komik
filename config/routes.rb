@@ -67,6 +67,8 @@ Rails.application.routes.draw do
         end
 
         resources :comics, only: %i[index show] do
+          resources :comments, only: %i[index create update destroy]
+
           member do
             post :like
             post :unlike

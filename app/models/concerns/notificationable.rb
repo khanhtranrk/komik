@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Notificationable
   extend ActiveSupport::Concern
 
@@ -6,12 +8,12 @@ module Notificationable
   end
 
   def send_notification(message)
-    Notify::PushJob.perform_later([id], message)
+    Notify::PushJob.perform_now([id], message)
   end
 
   class_methods do
     def send_notification(message)
-      Notify::PushJob.perform_later(ids, message)
+      Notify::PushJob.perform_now(ids, message)
     end
   end
 end

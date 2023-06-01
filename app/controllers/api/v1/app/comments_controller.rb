@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::App::CommentsController < ApplicationController
   before_action :set_comic
   before_action :set_comment, except: %i[index create]
@@ -26,11 +28,11 @@ class Api::V1::App::CommentsController < ApplicationController
   private
 
   def set_comic
-    @comic = Comic.find_by(id: params[:comic_id], active: true)
+    @comic = Comic.find_by!(id: params[:comic_id], active: true)
   end
 
   def set_comment
-    @comment = @comic.comments.find_by(id: params[:id], user: @current_user)
+    @comment = @comic.comments.find_by!(id: params[:id], user: @current_user)
   end
 
   def comment_params
