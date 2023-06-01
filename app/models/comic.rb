@@ -11,6 +11,7 @@ class Comic < ApplicationRecord
   has_many :followz, class_name: 'Follow', inverse_of: :comic, dependent: :delete_all
   has_many :users_liked, through: :likez, source: :user
   has_many :users_followed, through: :followz, source: :user
+  has_many :comments, dependent: :delete_all
 
   def liked_by?(user)
     Like.exists?(user:, comic_id: id)
