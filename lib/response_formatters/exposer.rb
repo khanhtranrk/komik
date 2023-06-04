@@ -3,7 +3,8 @@
 module ResponseFormatters
   module Exposer
     def expose(resource = nil, options = {})
-      data = if options.key?(:serializer) || options.key?(:each_serializer)
+
+      data = if resource.present? && (options.key?(:serializer) || options.key?(:each_serializer))
                options[:adapter] ||= :json
                ActiveModelSerializers::SerializableResource.new(resource, options)
              else

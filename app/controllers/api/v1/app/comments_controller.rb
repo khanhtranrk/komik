@@ -2,11 +2,20 @@
 
 class Api::V1::App::CommentsController < ApplicationController
   before_action :set_comic
-  before_action :set_comment, except: %i[index create]
+  before_action :set_comment, except: %i[index create user_comment]
 
   def index
     paginate @comic.comments,
-             each_serializer: App::CommentsSerializer
+             each_serializer: App::CommentsSerializer,
+             base_url: request.base_url
+  end
+
+  def user_comment
+    comment = Comment.find_by(user: @current_user, comic: @comic)
+
+    expose comment,
+           serializer: App::CommentsSerializer,
+           base_url: request.base_url
   end
 
   def create

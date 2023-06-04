@@ -26,8 +26,18 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :categories
-        resources :plans
+        resources :categories do
+          collection do
+            get :statistics
+          end
+        end
+
+        resources :plans do
+          collection do
+            get :statistics_by_subscriptions
+            get :statistics_by_revenue
+          end
+        end
         resources :feedbacks, only: %i[index]
         resources :users, only: %i[index show create update]
       end
@@ -67,7 +77,11 @@ Rails.application.routes.draw do
         end
 
         resources :comics, only: %i[index show] do
-          resources :comments, only: %i[index create update destroy]
+          resources :comments, only: %i[index create update destroy] do
+            collection do
+              get :user_comment
+            end
+          end
 
           member do
             post :like
