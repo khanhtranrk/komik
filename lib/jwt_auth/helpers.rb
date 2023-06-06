@@ -18,6 +18,8 @@ module JwtAuth
 
       raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') unless login
 
+      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if login.user.locked
+
       if login.expire_at < Time.zone.now
         login.destroy!
         raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token')

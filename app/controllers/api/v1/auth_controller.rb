@@ -7,7 +7,7 @@ class Api::V1::AuthController < ApplicationController
   skip_before_action :authenticate!
 
   def sign_up
-    user = User.create!(user_params.merge!(role: 0, birthday: '2001-01-01'))
+    user = User.create!(user_params.merge!(role: 0, birthday: '2001-01-01', locked: false))
 
     login = login!(user)
 
@@ -22,6 +22,8 @@ class Api::V1::AuthController < ApplicationController
     user = User.find_by('username = ? or email = ?', params[:username_or_email], params[:username_or_email])
 
     raise Errors::BadParameter, t(:invalid_sign_in_info) unless user&.authenticate(params[:password])
+
+    raise Errors::BadParameter, t(:account_locked) if user.locked
 
     login = login!(user)
 

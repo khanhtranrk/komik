@@ -7,7 +7,7 @@ module JwtAuth
       raise JwtAuth::Errors::MissingToken, I18n.t('jwt_auth.errors.missing_token') unless token
 
       decoded_token = JwtAuth::JsonWebToken.decode(token)
-      @current_user = User.find(decoded_token[:user_id])
+      @current_user = User.find_by!(id: decoded_token[:user_id], locked: false)
 
       Login.find_by!(user: @current_user, access_token: token)
     rescue JWT::DecodeError
