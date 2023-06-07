@@ -38,6 +38,8 @@ Rails.application.routes.draw do
             get :statistics_by_revenue
           end
         end
+
+        resources :documents, only: %i[show update]
         resources :feedbacks, only: %i[index]
         resources :users, only: %i[index show create update]
       end
