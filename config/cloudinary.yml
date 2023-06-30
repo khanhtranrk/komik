@@ -1,0 +1,11 @@
+development: 
+  cloud_name: "tdk-cloudinary"
+  api_key: "584234882643528"
+  api_secret: "M4Lw29tXoaloZL8mxjzv8Jf3hRY"
+  secure: true
+
+production:
+  cloud_name: "tdk-cloudinary"
+  api_key: "584234882643528"
+  api_secret: "M4Lw29tXoaloZL8mxjzv8Jf3hRY"
+  secure: true

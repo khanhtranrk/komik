@@ -9,6 +9,7 @@ gem 'active_model_serializers'
 gem 'activerecord-import'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', require: false
+gem 'cloudinary'
 gem 'image_processing', '>= 1.2'
 gem 'jwt'
 gem 'kaminari'
