@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_01_084416) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_01_085234) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,7 +50,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_084416) do
 
   create_table "chapters", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "posted_at", default: "2023-03-23 15:23:23"
+    t.datetime "posted_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
     t.boolean "free", default: false
     t.bigint "comic_id", null: false
     t.index ["comic_id"], name: "index_chapters_on_comic_id"
