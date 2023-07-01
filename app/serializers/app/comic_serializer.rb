@@ -5,6 +5,7 @@ class App::ComicSerializer < ActiveModel::Serializer
              :name,
              :other_names,
              :author,
+             :author_names,
              :status,
              :views,
              :likes,

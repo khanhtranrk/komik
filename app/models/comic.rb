@@ -12,6 +12,12 @@ class Comic < ApplicationRecord
   has_many :users_liked, through: :likez, source: :user
   has_many :users_followed, through: :followz, source: :user
   has_many :comments, dependent: :delete_all
+  has_many :authors_comics, dependent: :delete_all
+  has_many :authors, through: :authors_comics
+
+  def author_names
+    authors.pluck(:firstname).join(', ')
+  end
 
   def liked_by?(user)
     Like.exists?(user:, comic_id: id)
