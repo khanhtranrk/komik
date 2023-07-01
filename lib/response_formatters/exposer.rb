@@ -13,7 +13,7 @@ module ResponseFormatters
 
       resp_data = { status: :success }
       resp_data[:message] = options[:message] || :OK
-      resp_data[:data] = data.as_json if data.present?
+      resp_data[:data] = data.as_json if data
 
       render json: resp_data, status: options[:status] || :ok
     end
