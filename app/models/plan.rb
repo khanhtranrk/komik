@@ -17,7 +17,7 @@ class Plan < ApplicationRecord
           SELECT EXTRACT(DAY FROM sub_purchases.created_at) AS day, #{column_cases.join(', ')}
           FROM (
             SELECT * FROM purchases
-            WHERE EXTRACT(YEAR FROM purchases.created_at) = ? AND EXTRACT(MONTH FROM purchases.created_at) = ? AND purchases.expiry_date IS NOT NULL) AS sub_purchases 
+            WHERE EXTRACT(YEAR FROM purchases.created_at) = ? AND EXTRACT(MONTH FROM purchases.created_at) = ? AND purchases.expiry_date IS NOT NULL) AS sub_purchases
           INNER JOIN plans ON sub_purchases.plan_id = plans.id
           GROUP BY EXTRACT(DAY FROM sub_purchases.created_at)
         ) AS sub ON d.day = sub.day
@@ -40,7 +40,7 @@ class Plan < ApplicationRecord
         FROM generate_series(1, 12) AS m(month)
         LEFT JOIN (
           SELECT EXTRACT(MONTH FROM sub_purchases.created_at) AS month, #{column_cases.join(', ')}
-          FROM (SELECT * FROM purchases WHERE EXTRACT(YEAR FROM purchases.created_at) = ? AND purchases.expiry_date IS NOT NULL) AS sub_purchases 
+          FROM (SELECT * FROM purchases WHERE EXTRACT(YEAR FROM purchases.created_at) = ? AND purchases.expiry_date IS NOT NULL) AS sub_purchases
           INNER JOIN plans ON sub_purchases.plan_id = plans.id
           GROUP BY EXTRACT(MONTH FROM sub_purchases.created_at)
         ) AS sub ON m.month = sub.month
@@ -66,7 +66,7 @@ class Plan < ApplicationRecord
         FROM generate_series(#{from}, #{to}) AS y(year)
         LEFT JOIN (
           SELECT EXTRACT(YEAR FROM sub_purchases.created_at) AS year, #{column_cases.join(', ')}
-          FROM (SELECT * FROM purchases WHERE EXTRACT(YEAR FROM purchases.created_at) >= #{from} AND EXTRACT(YEAR FROM purchases.created_at) <= #{to} AND purchases.expiry_date IS NOT NULL) AS sub_purchases 
+          FROM (SELECT * FROM purchases WHERE EXTRACT(YEAR FROM purchases.created_at) >= #{from} AND EXTRACT(YEAR FROM purchases.created_at) <= #{to} AND purchases.expiry_date IS NOT NULL) AS sub_purchases
           INNER JOIN plans ON sub_purchases.plan_id = plans.id
           GROUP BY EXTRACT(YEAR FROM sub_purchases.created_at)
         ) AS sub ON y.year = sub.year

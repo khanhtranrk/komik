@@ -24,6 +24,7 @@ class Category < ApplicationRecord
 
       categories
     end
+
     def statistics
       connection.execute("
         SELECT
