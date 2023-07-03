@@ -28,7 +28,7 @@ class App::ChapterSerializer < ActiveModel::Serializer
     return nil if @instance_options[:previous_chapter].nil?
 
     ActiveModelSerializers::SerializableResource.new(
-    @instance_options[:previous_chapter],
+      @instance_options[:previous_chapter],
       serializer: App::ChaptersSerializer
     )
   end

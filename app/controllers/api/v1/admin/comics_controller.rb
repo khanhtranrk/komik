@@ -75,6 +75,7 @@ class Api::V1::Admin::ComicsController < AdministratorController
                   :status,
                   :description,
                   :active,
-                  category_ids: []
+                  category_ids: [],
+                  author_ids: []
   end
 end

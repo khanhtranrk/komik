@@ -18,12 +18,12 @@ class Api::V1::App::ChaptersController < ApplicationController
     chapters = chapter.comic.chapters
     current_chapter_index = chapters.index(chapter)
     next_chapter = current_chapter_index < chapters.size - 1 ? chapters[current_chapter_index + 1] : nil
-    previous_chapter = current_chapter_index > 0 ? chapters[current_chapter_index - 1] : nil
+    previous_chapter = current_chapter_index.positive? ? chapters[current_chapter_index - 1] : nil
 
     expose chapter,
            serializer: App::ChapterSerializer,
            base_url: request.base_url,
-           next_chapter: next_chapter,
-           previous_chapter: previous_chapter
+           next_chapter:,
+           previous_chapter:
   end
 end

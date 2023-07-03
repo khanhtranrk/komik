@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_01_084416) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_01_100122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_084416) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "authors", force: :cascade do |t|
+    t.string "firstname", null: false
+    t.string "lastname", null: false
+    t.datetime "birthday", null: false
+    t.text "introduction", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "authors_comics", force: :cascade do |t|
+    t.bigint "comic_id", null: false
+    t.bigint "author_id", null: false
+    t.index ["author_id"], name: "index_authors_comics_on_author_id"
+    t.index ["comic_id", "author_id"], name: "index_authors_comics_on_comic_id_and_author_id", unique: true
+    t.index ["comic_id"], name: "index_authors_comics_on_comic_id"
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", default: ""
@@ -50,7 +67,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_084416) do
 
   create_table "chapters", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "posted_at", default: "2023-03-23 15:23:23"
+    t.datetime "posted_at", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
     t.boolean "free", default: false
     t.bigint "comic_id", null: false
     t.index ["comic_id"], name: "index_chapters_on_comic_id"
@@ -212,6 +229,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_084416) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "authors_comics", "authors"
+  add_foreign_key "authors_comics", "comics"
   add_foreign_key "chapters", "comics"
   add_foreign_key "refresh_tokens", "users"
 end

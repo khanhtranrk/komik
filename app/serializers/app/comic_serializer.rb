@@ -5,12 +5,14 @@ class App::ComicSerializer < ActiveModel::Serializer
              :name,
              :other_names,
              :author,
+             :author_names,
              :status,
              :views,
              :likes,
              :description,
              :categories,
              :chapters,
+             :authors,
              :image_url,
              :up_coming
 
@@ -55,6 +57,13 @@ class App::ComicSerializer < ActiveModel::Serializer
     ActiveModelSerializers::SerializableResource.new(
       object.categories,
       each_serializer: App::CategoriesSerializer
+    )
+  end
+
+  def authors
+    ActiveModelSerializers::SerializableResource.new(
+      object.authors,
+      each_serializer: App::AuthorsSerializer
     )
   end
 
