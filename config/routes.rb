@@ -32,6 +32,12 @@ Rails.application.routes.draw do
           end
         end
 
+        resources :authors do
+          member do
+            put :upload_image
+          end
+        end
+
         resources :plans do
           collection do
             get :statistics_by_subscriptions
