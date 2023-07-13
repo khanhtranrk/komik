@@ -4,7 +4,7 @@ class Admin::ComicsSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :other_names,
-             :author,
+             :authors,
              :status,
              :views,
              :likes,
@@ -19,5 +19,12 @@ class Admin::ComicsSerializer < ActiveModel::Serializer
 
   def up_coming
     object.last_updated_chapter_at.nil?
+  end
+
+  def authors
+    ActiveModelSerializers::SerializableResource.new(
+      object.authors,
+      each_serializer: App::AuthorsSerializer
+    )
   end
 end

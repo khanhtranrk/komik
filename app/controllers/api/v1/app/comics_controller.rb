@@ -7,6 +7,7 @@ class Api::V1::App::ComicsController < ApplicationController
     comics = Comic.filter(params)
                   .where(active: true)
                   .where('comics.last_updated_chapter_at IS NOT NULL')
+                  .includes(:categories, :chapters, :authors)
                   .with_attached_image
 
     paginate comics,
@@ -15,7 +16,7 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def show
-    comic = Comic.includes(:categories, :chapters)
+    comic = Comic.includes(:categories, :chapters, :authors)
                  .find_by!(id: params[:id], active: true)
 
     expose comic,

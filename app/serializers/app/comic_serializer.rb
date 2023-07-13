@@ -4,15 +4,13 @@ class App::ComicSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :other_names,
-             :author,
-             :author_names,
+             :authors,
              :status,
              :views,
              :likes,
              :description,
              :categories,
              :chapters,
-             :authors,
              :image_url,
              :up_coming
 

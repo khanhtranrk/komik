@@ -4,7 +4,7 @@ class Admin::ComicSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
              :other_names,
-             :author,
+             :authors,
              :status,
              :views,
              :likes,
@@ -21,6 +21,13 @@ class Admin::ComicSerializer < ActiveModel::Serializer
     ActiveModelSerializers::SerializableResource.new(
       object.categories,
       each_serializer: App::CategoriesSerializer
+    )
+  end
+
+  def authors
+    ActiveModelSerializers::SerializableResource.new(
+      object.authors,
+      each_serializer: App::AuthorsSerializer
     )
   end
 end
