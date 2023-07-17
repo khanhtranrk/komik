@@ -4,6 +4,7 @@ class CreateCategories < ActiveRecord::Migration[7.0]
       t.string :name, null: false
       t.text :description, default: ''
     end
+
     add_index :categories, :name, unique: true
   end
 end

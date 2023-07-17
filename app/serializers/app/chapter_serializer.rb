@@ -3,8 +3,9 @@
 class App::ChapterSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
-             :posted_at,
              :free,
+             :created_at,
+             :updated_at,
              :image_urls,
              :next_chapter,
              :previous_chapter

@@ -27,12 +27,13 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'rspec-rails'
-  gem 'rubocop'
+  gem 'rubocop', require: false
   gem 'rubocop-rails'
 end
 
 group :development do
   gem 'solargraph'
+  gem 'rails-erd'
 end
 
 group :test do

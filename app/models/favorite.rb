@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Like < ApplicationRecord
+class Favorite < ApplicationRecord
   belongs_to :user
   belongs_to :comic
 

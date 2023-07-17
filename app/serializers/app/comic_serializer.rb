@@ -7,10 +7,11 @@ class App::ComicSerializer < ActiveModel::Serializer
              :authors,
              :status,
              :views,
-             :likes,
+             :favorites,
+             :follows,
              :description,
              :categories,
-             :chapters,
+             :release_date,
              :image_url,
              :up_coming
 
@@ -47,10 +48,6 @@ class App::ComicSerializer < ActiveModel::Serializer
     nil
   end
 
-  def likes
-    0
-  end
-
   def categories
     ActiveModelSerializers::SerializableResource.new(
       object.categories,
@@ -62,13 +59,6 @@ class App::ComicSerializer < ActiveModel::Serializer
     ActiveModelSerializers::SerializableResource.new(
       object.authors,
       each_serializer: App::AuthorsSerializer
-    )
-  end
-
-  def chapters
-    ActiveModelSerializers::SerializableResource.new(
-      object.chapters,
-      each_serializer: App::ChaptersSerializer
     )
   end
 end

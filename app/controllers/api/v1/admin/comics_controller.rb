@@ -71,7 +71,6 @@ class Api::V1::Admin::ComicsController < AdministratorController
     params.require(:comic)
           .permit :name,
                   :other_names,
-                  :author,
                   :status,
                   :description,
                   :active,

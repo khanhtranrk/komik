@@ -8,10 +8,11 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :lastname, default: ''
       t.date :birthday, null: false
       t.integer :role, default: 0
-      t.string :image
+      t.boolean :locked, default: false
 
       t.timestamps
     end
+
     add_index :users, :username, unique: true
     add_index :users, :email, unique: true
   end

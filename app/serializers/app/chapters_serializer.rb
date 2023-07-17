@@ -3,6 +3,7 @@
 class App::ChaptersSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
-             :posted_at,
-             :free
+             :free,
+             :created_at,
+             :updated_at
 end

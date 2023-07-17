@@ -7,11 +7,11 @@ class Comic < ApplicationRecord
   has_many :categories, through: :comics_categories
   has_many :chapters, dependent: :delete_all
   has_many :reading_chapters, dependent: :delete_all
-  has_many :likez, class_name: 'Like', inverse_of: :comic, dependent: :delete_all
+  has_many :favoritez, class_name: 'Favorite', inverse_of: :comic, dependent: :delete_all
   has_many :followz, class_name: 'Follow', inverse_of: :comic, dependent: :delete_all
-  has_many :users_liked, through: :likez, source: :user
+  has_many :users_favorited, through: :favoritez, source: :user
   has_many :users_followed, through: :followz, source: :user
-  has_many :comments, dependent: :delete_all
+  has_many :review, dependent: :delete_all
   has_many :authors_comics, dependent: :delete_all
   has_many :authors, through: :authors_comics
 
@@ -34,6 +34,12 @@ class Comic < ApplicationRecord
   class << self
     def filter(params)
       comics = all
+
+      if params[:release_dates].present?
+        release_dates = params[:category_ids].split(',').map(&:to_i)
+        comic_ids = ComicsCategory.where(release_date: category_ids).pluck(:comic_id)
+        comics = comics.where(id: comic_ids)
+      end
 
       if params[:category_ids].present?
         category_ids = params[:category_ids].split(',').map(&:to_i)

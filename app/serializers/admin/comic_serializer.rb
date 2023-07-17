@@ -7,10 +7,12 @@ class Admin::ComicSerializer < ActiveModel::Serializer
              :authors,
              :status,
              :views,
-             :likes,
+             :favorites,
+             :follows,
              :active,
              :description,
              :categories,
+             :release_date,
              :image_url
 
   def image_url

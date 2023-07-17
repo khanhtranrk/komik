@@ -9,12 +9,10 @@ class Api::V1::AuthController < ApplicationController
   def sign_up
     user = User.create!(user_params.merge!(role: 0, birthday: '2001-01-01', locked: false))
 
-    login = login!(user)
+    session = login!(user)
 
-    update_login_device!(login)
-
-    expose refresh_token: login.token,
-           access_token: login.access_token,
+    expose refresh_token: session.refresh_token,
+           access_token: session.access_token,
            role: user.role
   end
 
@@ -25,12 +23,10 @@ class Api::V1::AuthController < ApplicationController
 
     raise Errors::BadParameter, t(:account_locked) if user.locked
 
-    login = login!(user)
+    session = login!(user)
 
-    update_login_device!(login)
-
-    expose refresh_token: login.token,
-           access_token: login.access_token,
+    expose refresh_token: session.refresh_token,
+           access_token: session.access_token,
            role: user.role
   end
 
@@ -40,13 +36,11 @@ class Api::V1::AuthController < ApplicationController
   end
 
   def refresh
-    login = refresh!
+    session = refresh!
 
-    update_login_device!(login)
-
-    expose refresh_token: login.token,
-           access_token: login.access_token,
-           role: login.user.role
+    expose refresh_token: session.refresh_token,
+           access_token: session.access_token,
+           role: session.user.role
   end
 
   def send_verification_code
@@ -68,21 +62,6 @@ class Api::V1::AuthController < ApplicationController
   end
 
   private
-
-  def update_login_device!(login)
-    return unless request.headers['Exponent-Token']
-
-    Device.where(
-      'exponent_token = ? or login_id = ?',
-      request.headers['Exponent-Token'],
-      login.id
-    ).delete_all
-
-    Device.create!(
-      exponent_token: request.headers['Exponent-Token'],
-      login_id: login.id
-    )
-  end
 
   def user_params
     params.permit(User::REQUIRED_ATTRIBUTES)

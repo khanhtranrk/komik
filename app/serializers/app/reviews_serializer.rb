@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class App::CommentsSerializer < ActiveModel::Serializer
+class App::ReviewsSerializer < ActiveModel::Serializer
   attributes :id,
              :title,
              :content,

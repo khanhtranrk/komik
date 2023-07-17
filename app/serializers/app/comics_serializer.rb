@@ -8,8 +8,10 @@ class App::ComicsSerializer < ActiveModel::Serializer
              :categories,
              :status,
              :views,
-             :likes,
+             :favorites,
+             :follows,
              :description,
+             :release_date,
              :image_url,
              :up_coming
 

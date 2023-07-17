@@ -3,7 +3,7 @@
 module JwtAuth
   module Helpers
     def login!(user)
-      JwtAuth::LoginHelper.create_login!(user.id)
+      JwtAuth::SessionHelper.create_session!(user.id)
     end
 
     def refresh!
@@ -14,18 +14,18 @@ module JwtAuth
 
       decoded_token = JwtAuth::JsonWebToken.decode(access_token, verify: false)
 
-      login = Login.find_by(user_id: decoded_token[:user_id], token: refresh_token, access_token:)
+      session = Session.find_by(user_id: decoded_token[:user_id], refresh_token:, access_token:)
 
-      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') unless login
+      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') unless session
 
-      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if login.user.locked
+      raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') if session.user.locked
 
-      if login.expire_at < Time.zone.now
-        login.destroy!
+      if session.expire_at < Time.zone.now
+        session.destroy!
         raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token')
       end
 
-      JwtAuth::LoginHelper.update_login!(login)
+      JwtAuth::SessionHelper.update_session!(session)
     end
 
     def logout!
@@ -36,12 +36,12 @@ module JwtAuth
 
       decoded_token = JwtAuth::JsonWebToken.decode(access_token, verify: false)
 
-      login = Login.find_by(user_id: decoded_token[:user_id], token: refresh_token, access_token:)
+      session = Session.find_by(user_id: decoded_token[:user_id], refresh_token:, access_token:)
 
       raise JwtAuth::Errors::InvalidToken, I18n.t('jwt_auth.errors.invalid_token') unless login
 
-      Login.find_by!(user: login.user, token: refresh_token)
-           .destroy!
+      Session.find_by!(user: session.user, refresh_token:)
+             .destroy!
 
       nil
     end

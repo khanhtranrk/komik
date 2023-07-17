@@ -7,7 +7,7 @@ class Api::V1::App::ComicsController < ApplicationController
     comics = Comic.filter(params)
                   .where(active: true)
                   .where('comics.last_updated_chapter_at IS NOT NULL')
-                  .includes(:categories, :chapters, :authors)
+                  .includes(:categories, :authors)
                   .with_attached_image
 
     paginate comics,
@@ -25,19 +25,15 @@ class Api::V1::App::ComicsController < ApplicationController
            base_url: request.base_url
   end
 
-  def like
-    Like.create!(comic: @comic, user: @current_user)
-
-    @comic.update(likes: @comic.likes + 1)
+  def favorite
+    Favorite.create!(comic: @comic, user: @current_user)
 
     expose
   end
 
-  def unlike
-    Like.find_by!(comic: @comic, user: @current_user)
-        .destroy!
-
-    @comic.update(likes: @comic.likes - 1)
+  def unfavorite
+    Favorite.find_by!(comic: @comic, user: @current_user)
+            .destroy!
 
     expose
   end
@@ -55,8 +51,8 @@ class Api::V1::App::ComicsController < ApplicationController
     expose
   end
 
-  def liked
-    comics = Comic.where(id: @current_user.likes.pluck(:comic_id), active: true)
+  def favorited
+    comics = Comic.where(id: @current_user.favorites.pluck(:comic_id), active: true)
                   .order(last_updated_chapter_at: :desc)
 
     paginate comics,

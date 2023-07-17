@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
       namespace :admin do
         resources :comics do
+          resources :comments, only: %i[index destroy]
+
           member do
             put :upload_image
           end
@@ -45,6 +47,8 @@ Rails.application.routes.draw do
           end
         end
 
+        resources :purchases, except: %i[create]
+
         resources :documents, only: %i[show update]
         resources :feedbacks, only: %i[index]
         resources :users, only: %i[index show create update]
@@ -52,19 +56,18 @@ Rails.application.routes.draw do
 
       namespace :app do
         resources :categories, only: %i[index]
-        resources :chapters, only: %i[show]
         resources :plans, only: %i[index]
         resources :notifications, only: %i[index]
         resources :feedbacks, only: %i[create]
         resources :authors, only: %i[show]
 
-        resources :searchings, only: %i[index] do
+        resources :searchings, only: %i[] do
           collection do
             get :suggest_keywords
           end
         end
 
-        resources :documents, only: %[] do
+        resources :documents, only: %i[] do
           collection do
             get :policy_and_terms
             get :introduction
@@ -91,6 +94,8 @@ Rails.application.routes.draw do
               get :user_comment
             end
           end
+
+          resources :chapters, only: %i[index show]
 
           member do
             post :like

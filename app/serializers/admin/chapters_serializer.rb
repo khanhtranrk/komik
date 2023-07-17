@@ -3,9 +3,10 @@
 class Admin::ChaptersSerializer < ActiveModel::Serializer
   attributes :id,
              :name,
-             :posted_at,
              :free,
-             :image_urls
+             :image_urls,
+             :created_at,
+             :updated_at
 
   def image_urls
     object.images.map do |image|

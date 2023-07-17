@@ -5,8 +5,6 @@ class CreateAuthors < ActiveRecord::Migration[7.0]
       t.string :lastname, null: false
       t.datetime :birthday, null: false
       t.text :introduction, null: false
-
-      t.timestamps
     end
   end
 end

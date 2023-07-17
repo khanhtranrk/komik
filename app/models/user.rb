@@ -10,13 +10,13 @@ class User < ApplicationRecord
   has_one :verification, dependent: :destroy
 
   has_many :refresh_tokens, dependent: :delete_all
-  has_many :likes, dependent: :delete_all
+  has_many :favorites, dependent: :delete_all
   has_many :follows, dependent: :delete_all
   has_many :reading_chapters, dependent: :delete_all
   has_many :purchases, dependent: :delete_all
-  has_many :logins, dependent: :delete_all
+  has_many :session, dependent: :delete_all
   has_many :feedbacks, dependent: :delete_all
-  has_many :comments, dependent: :delete_all
+  has_many :reviews, dependent: :delete_all
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :username, :email, uniqueness: true
@@ -50,5 +50,13 @@ class User < ApplicationRecord
 
       users
     end
+  end
+
+  def self.create!(i)
+    # code here
+  end
+
+  def self.find_by(i, i1, i2)
+    # code here
   end
 end

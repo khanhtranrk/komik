@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
 class Api::V1::App::ChaptersController < ApplicationController
+  before_action :set_comic
+
+  def index
+    chapters = Chapter.where(comic_id: @comic.id)
+
+    paginate chapters,
+             each_serializer: App::ChaptersSerializer,
+             base_url: request.base_url
+  end
+
   def show
-    chapter = Chapter.includes(images_attachments: :blob).find(params[:id])
+    chapter = @comic.chapters
+                    .includes(images_attachments: :blob)
+                    .find(params[:id])
 
     raise Errors::PermissionDenied, t(:permission_denied) if !chapter.free && @current_user.current_plan.nil?
 
@@ -25,5 +37,11 @@ class Api::V1::App::ChaptersController < ApplicationController
            base_url: request.base_url,
            next_chapter:,
            previous_chapter:
+  end
+
+  private
+
+  def set_comic
+    @comic = Comic.find(params[:comic_id])
   end
 end
