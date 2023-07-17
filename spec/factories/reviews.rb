@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :comment do
+  factory :review do
     user_id { "" }
     comic_id { "" }
     title { "MyString" }

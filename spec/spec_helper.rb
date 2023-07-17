@@ -17,7 +17,7 @@
 RSpec.configure do |config|
   config.before(:each) do
     user = FactoryBot.create(:user)
-    access_token = JwtAuth::LoginHelper.create_login!(user.id).access_token
+    access_token = JwtAuth::SessionHelper.create_session!(user.id).access_token
     @headers = { 'Authorization': access_token }
   end
 

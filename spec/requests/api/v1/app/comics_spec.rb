@@ -13,7 +13,6 @@ RSpec.describe "Api::V1::App::Comics", type: :request do
   end
 
   describe "GET #show" do
-    let!(:comic) { create(:comic) }
     before { get api_v1_app_comic_path(comic.id), headers: @headers }
 
     it "returns a status code of 200" do

@@ -15,7 +15,7 @@ class App::ComicSerializer < ActiveModel::Serializer
              :image_url,
              :up_coming
 
-  attribute :liked, if: :current_user?
+  attribute :favorited, if: :current_user?
   attribute :followed, if: :current_user?
   attribute :reading_chapter, if: :current_user?
 
@@ -31,8 +31,8 @@ class App::ComicSerializer < ActiveModel::Serializer
     object.last_updated_chapter_at.nil?
   end
 
-  def liked
-    object.liked_by?(@instance_options[:current_user])
+  def favorited
+    object.favorited_by?(@instance_options[:current_user])
   end
 
   def followed

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::Admin::Comments", type: :request do
+RSpec.describe "Api::V1::App::Reviews", type: :request do
   describe "GET /index" do
     pending "add some examples (or delete) #{__FILE__}"
   end
