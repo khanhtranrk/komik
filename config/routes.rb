@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :auth, only: %i[] do
+      resources :sessions, only: %i[] do
         collection do
           post :sign_up
           post :sign_in
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
       namespace :admin do
         resources :comics do
-          resources :comments, only: %i[index destroy]
+          resources :reviews, only: %i[index destroy]
 
           member do
             put :upload_image
@@ -89,23 +89,23 @@ Rails.application.routes.draw do
         end
 
         resources :comics, only: %i[index show] do
-          resources :comments, only: %i[index create update destroy] do
+          resources :reviews, only: %i[index create update destroy] do
             collection do
-              get :user_comment
+              get :user_review
             end
           end
 
           resources :chapters, only: %i[index show]
 
           member do
-            post :like
-            post :unlike
+            post :favorite
+            post :unfavorite
             post :follow
             post :unfollow
           end
 
           collection do
-            get :liked
+            get :favorited
             get :followed
             get :up_coming
             get :read

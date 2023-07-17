@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-class Api::V1::AuthController < ApplicationController
+class Api::V1::SessionsController < ApplicationController
   include JwtAuth::Helpers
   include VerificationHelper
 
   skip_before_action :authenticate!
 
   def sign_up
-    user = User.create!(user_params.merge!(role: 0, birthday: '2001-01-01', locked: false))
+    user = User.create!(user_params.merge!(role: 0, birthday: '2001-01-01'))
+    p user
 
     session = login!(user)
 

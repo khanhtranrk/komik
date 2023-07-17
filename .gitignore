@@ -30,3 +30,6 @@
 
 # Ignore .env
 /.env
+
+# Ignore .env
+/.idea

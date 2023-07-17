@@ -9,7 +9,6 @@ class User < ApplicationRecord
 
   has_one :verification, dependent: :destroy
 
-  has_many :refresh_tokens, dependent: :delete_all
   has_many :favorites, dependent: :delete_all
   has_many :follows, dependent: :delete_all
   has_many :reading_chapters, dependent: :delete_all
@@ -50,13 +49,5 @@ class User < ApplicationRecord
 
       users
     end
-  end
-
-  def self.create!(i)
-    # code here
-  end
-
-  def self.find_by(i, i1, i2)
-    # code here
   end
 end
