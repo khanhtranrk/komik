@@ -11,7 +11,7 @@ class Comic < ApplicationRecord
   has_many :followz, class_name: 'Follow', inverse_of: :comic, dependent: :delete_all
   has_many :users_favorited, through: :favoritez, source: :user
   has_many :users_followed, through: :followz, source: :user
-  has_many :review, dependent: :delete_all
+  has_many :reviews, dependent: :delete_all
   has_many :authors_comics, dependent: :delete_all
   has_many :authors, through: :authors_comics
 

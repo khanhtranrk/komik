@@ -6,6 +6,12 @@ class Author < ApplicationRecord
   has_many :authors_comics, dependent: :destroy
   has_many :comics, through: :authors_comics
 
+  validates :firstname,
+            :lastname,
+            :birthday,
+            :introduction,
+            presence: true
+
   class << self
     def filter(params)
       authors = all
