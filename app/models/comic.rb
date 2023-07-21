@@ -51,8 +51,8 @@ class Comic < ApplicationRecord
         query = params[:query].strip
 
         comics = comics.where(
-          'name ILIKE ? OR other_names ILIKE ? OR description ILIKE ? OR author ILIKE ?',
-          "%#{query}%", "%#{query}%", "%#{query}%", "%#{query}%"
+          'name ILIKE ? OR other_names ILIKE ? OR description ILIKE ?',
+          "%#{query}%", "%#{query}%", "%#{query}%"
         )
       end
 

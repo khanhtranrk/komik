@@ -9,7 +9,6 @@ class Author < ApplicationRecord
   validates :firstname,
             :lastname,
             :birthday,
-            :introduction,
             presence: true
 
   class << self

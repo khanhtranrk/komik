@@ -4,8 +4,8 @@ class App::PurchaseSerializer < ActiveModel::Serializer
   attributes :id,
              :plan,
              :price,
-             :effective_date,
-             :expiry_date,
+             :effective_at,
+             :expires_at,
              :payment_method,
              :created_at
 

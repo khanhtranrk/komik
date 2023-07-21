@@ -26,7 +26,7 @@ class User < ApplicationRecord
   REQUIRED_ATTRIBUTES = %i[username email password].freeze
 
   def current_plan
-    purchases.find_by('NOW()::TIMESTAMP > effective_date::TIMESTAMP AND NOW()::TIMESTAMP < expiry_date::TIMESTAMP')
+    purchases.find_by('NOW()::TIMESTAMP > effective_at::TIMESTAMP AND NOW()::TIMESTAMP < expires_at::TIMESTAMP')
   end
 
   class << self
