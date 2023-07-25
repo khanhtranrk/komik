@@ -90,6 +90,10 @@ Rails.application.routes.draw do
 
         resources :comics, only: %i[index show] do
           resources :reviews, only: %i[index create update destroy] do
+            member do
+              post :evaluate
+            end
+
             collection do
               get :user_review
             end

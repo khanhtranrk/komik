@@ -4,6 +4,10 @@ class App::ReviewsSerializer < ActiveModel::Serializer
   attributes :id,
              :title,
              :content,
+             :agreement_count,
+             :disagreement_count,
+             :transgression_count,
+             :point_of_view,
              :created_at,
              :updated_at,
              :user
