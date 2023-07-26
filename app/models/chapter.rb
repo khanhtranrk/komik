@@ -7,5 +7,5 @@ class Chapter < ApplicationRecord
 
   belongs_to :comic
 
-  has_many :reading_chapters, dependent: :delete_all
+  has_many :readings, dependent: :destroy
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_16_144333) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_26_110729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -172,6 +172,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_144333) do
     t.index ["user_id"], name: "index_reading_chapters_on_user_id"
   end
 
+  create_table "readings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "chapter_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chapter_id"], name: "index_readings_on_chapter_id"
+    t.index ["user_id", "chapter_id"], name: "index_readings_on_user_id_and_chapter_id", unique: true
+    t.index ["user_id"], name: "index_readings_on_user_id"
+  end
+
   create_table "registries", force: :cascade do |t|
     t.string "key", null: false
     t.jsonb "value", null: false
@@ -245,6 +255,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_144333) do
   add_foreign_key "reading_chapters", "chapters"
   add_foreign_key "reading_chapters", "comics"
   add_foreign_key "reading_chapters", "users"
+  add_foreign_key "readings", "chapters"
+  add_foreign_key "readings", "users"
   add_foreign_key "reviews", "comics"
   add_foreign_key "reviews", "users"
   add_foreign_key "sessions", "users"

@@ -9,13 +9,13 @@ class User < ApplicationRecord
 
   has_one :verification, dependent: :destroy
 
-  has_many :favorites, dependent: :delete_all
-  has_many :follows, dependent: :delete_all
-  has_many :reading_chapters, dependent: :delete_all
-  has_many :purchases, dependent: :delete_all
-  has_many :session, dependent: :delete_all
-  has_many :feedbacks, dependent: :delete_all
-  has_many :reviews, dependent: :delete_all
+  has_many :favorites, dependent: :destroy
+  has_many :follows, dependent: :destroy
+  has_many :readings, dependent: :destroy
+  has_many :purchases, dependent: :destroy
+  has_many :session, dependent: :destroy
+  has_many :feedbacks, dependent: :destroy
+  has_many :reviews, dependent: :destroy
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :username, :email, uniqueness: true

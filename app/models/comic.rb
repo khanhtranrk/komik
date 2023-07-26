@@ -1,18 +1,54 @@
 # frozen_string_literal: true
 
 class Comic < ApplicationRecord
+  scope :reading_by, lambda { |user_id|
+    last_read_case = Arel.sql(<<~SQL)
+      CASE 
+        WHEN A.last_read_at > comics.last_updated_chapter_at THEN A.last_read_at 
+        ELSE comics.last_updated_chapter_at 
+      END
+    SQL
+
+    select('comics.*, A.last_read_at AS last_read_at, COUNT(new_chapters.id) AS new_chapters')
+      .joins(
+        <<-SQL
+          INNER JOIN (
+            SELECT chapters.comic_id AS comic_id, MAX(readings.updated_at) AS last_read_at
+            FROM chapters
+            INNER JOIN readings ON readings.chapter_id = chapters.id AND user_id = #{user_id}
+            GROUP BY chapters.comic_id
+          ) AS A ON A.comic_id = comics.id
+        SQL
+      )
+      .joins(
+        <<-SQL
+          LEFT JOIN chapters AS new_chapters ON new_chapters.comic_id = comics.id AND new_chapters.created_at > A.last_read_at
+        SQL
+      )
+      .where(
+        <<-SQL
+          NOT EXISTS (
+            SELECT 1
+            FROM readings
+            WHERE readings.chapter_id = new_chapters.id AND readings.user_id = #{user_id}
+          )
+        SQL
+      )
+      .group('comics.id, A.last_read_at, comics.last_updated_chapter_at')
+      .order(last_read_case.desc)
+  }
+
   has_one_attached :image
 
-  has_many :comics_categories, dependent: :delete_all
+  has_many :comics_categories, dependent: :destroy
   has_many :categories, through: :comics_categories
-  has_many :chapters, dependent: :delete_all
-  has_many :reading_chapters, dependent: :delete_all
-  has_many :favoritez, class_name: 'Favorite', inverse_of: :comic, dependent: :delete_all
-  has_many :followz, class_name: 'Follow', inverse_of: :comic, dependent: :delete_all
+  has_many :chapters, dependent: :destroy
+  has_many :favoritez, class_name: 'Favorite', inverse_of: :comic, dependent: :destroy
+  has_many :followz, class_name: 'Follow', inverse_of: :comic, dependent: :destroy
   has_many :users_favorited, through: :favoritez, source: :user
   has_many :users_followed, through: :followz, source: :user
-  has_many :reviews, dependent: :delete_all
-  has_many :authors_comics, dependent: :delete_all
+  has_many :reviews, dependent: :destroy
+  has_many :authors_comics, dependent: :destroy
   has_many :authors, through: :authors_comics
 
   def author_names
@@ -28,7 +64,10 @@ class Comic < ApplicationRecord
   end
 
   def reading_chapter_by(user)
-    reading_chapters.find_by(user:)
+    readings = Reading.where(user:, chapter: chapters)
+                   .order(updated_at: :desc)
+
+    readings.first
   end
 
   class << self
@@ -36,9 +75,8 @@ class Comic < ApplicationRecord
       comics = all
 
       if params[:release_dates].present?
-        release_dates = params[:category_ids].split(',').map(&:to_i)
-        comic_ids = ComicsCategory.where(release_date: category_ids).pluck(:comic_id)
-        comics = comics.where(id: comic_ids)
+        release_years = params[:release_dates].split(',').map { |date| DateTime.parse(date).year }
+        comics = comics.where("EXTRACT(YEAR FROM release_date) IN (?)", release_years)
       end
 
       if params[:category_ids].present?

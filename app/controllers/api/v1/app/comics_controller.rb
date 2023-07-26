@@ -79,8 +79,10 @@ class Api::V1::App::ComicsController < ApplicationController
   end
 
   def read
-    comics = Comic.where(id: @current_user.reading_chapters.pluck(:comic_id), active: true)
-                  .order(last_updated_chapter_at: :desc)
+    comics = Comic.includes(:authors, :categories)
+                  .with_attached_image
+                  .where(active: true)
+                  .reading_by(@current_user.id)
 
     paginate comics,
              each_serializer: App::ComicsSerializer,

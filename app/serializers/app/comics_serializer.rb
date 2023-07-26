@@ -13,7 +13,11 @@ class App::ComicsSerializer < ActiveModel::Serializer
              :description,
              :release_date,
              :image_url,
-             :up_coming
+             :up_coming,
+             :last_updated_chapter_at
+
+  attribute :last_read_at, if: -> { object.has_attribute?(:last_read_at) }
+  attribute :new_chapters, if: -> { object.has_attribute?(:new_chapters) }
 
   def image_url
     @instance_options[:base_url] + Rails.application.routes.url_helpers.rails_blob_url(object.image, only_path: true) if object.image.attached?

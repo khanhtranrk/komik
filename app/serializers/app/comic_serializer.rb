@@ -41,7 +41,7 @@ class App::ComicSerializer < ActiveModel::Serializer
 
   def reading_chapter
     ActiveModelSerializers::SerializableResource.new(
-      object.reading_chapter_by(@instance_options[:current_user]).chapter,
+      object.reading_chapter_by(@instance_options[:current_user]).chapter.merge(read: true),
       each_serializer: App::ChaptersSerializer
     )
   rescue StandardError

@@ -4,7 +4,10 @@ class Api::V1::App::ChaptersController < ApplicationController
   before_action :set_comic
 
   def index
-    chapters = Chapter.where(comic_id: @comic.id)
+    chapters = Chapter.select('chapters.*', 'BOOL_OR(CASE WHEN readings.id IS NOT NULL THEN true ELSE false END) AS read')
+                      .joins('LEFT JOIN readings ON readings.chapter_id = chapters.id AND readings.user_id = ' + @current_user.id.to_s)
+                      .group('chapters.id')
+                      .where(comic_id: @comic.id)
 
     paginate chapters,
              each_serializer: App::ChaptersSerializer,
@@ -16,15 +19,16 @@ class Api::V1::App::ChaptersController < ApplicationController
                     .includes(images_attachments: :blob)
                     .find(params[:id])
 
+    # Checking plan
     raise Errors::PermissionDenied, t(:permission_denied) if !chapter.free && @current_user.current_plan.nil?
 
-    reading_chapter = ReadingChapter.find_by(user_id: @current_user.id, comic_id: chapter.comic_id)
+    # Checking read
+    reading = Reading.find_by(user_id: @current_user.id, chapter_id: chapter.id)
 
-    if reading_chapter
-      reading_chapter.update!(chapter_id: chapter.id)
+    if reading
+      reading.update!(updated_at: Time.zone.now)
     else
-      ReadingChapter.create!(user_id: @current_user.id, comic_id: chapter.comic_id, chapter_id: chapter.id)
-      chapter.comic.update!(views: chapter.comic.views + 1)
+      Reading.create!(user_id: @current_user.id, chapter_id: chapter.id)
     end
 
     chapters = chapter.comic.chapters
