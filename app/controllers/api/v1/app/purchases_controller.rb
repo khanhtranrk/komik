@@ -40,8 +40,8 @@ class Api::V1::App::PurchasesController < ApplicationController
     current_time = Time.zone.now
 
     purchase.update!(
-      effective_date: current_time,
-      expiry_date: current_time + plan.value.hours
+      effective_at: current_time,
+      expires_at: current_time + plan.value.hours
     )
 
     # send notify
