@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class Plan < ApplicationRecord
+  has_many :purchases, dependent: :restrict_with_exception
+
+  validates :name, uniqueness: true
+  validates :name, :price, :value, presence: true
+
   class << self
     def statistics_by_days(year, month, plan_ids, stat_object = :subscriptions)
       column_names = plan_ids.map { |plan_id| "COALESCE(id_#{plan_id}, 0) as id_#{plan_id}" }

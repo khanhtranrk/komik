@@ -51,6 +51,8 @@ class Comic < ApplicationRecord
   has_many :authors_comics, dependent: :destroy
   has_many :authors, through: :authors_comics
 
+  validates :name, presence: true
+
   def author_names
     authors.pluck(:firstname).join(', ')
   end

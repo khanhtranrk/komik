@@ -3,6 +3,8 @@
 class Feedback < ApplicationRecord
   belongs_to :user
 
+  validates :title, :content, presence: true
+
   class << self
     def filter(params)
       feedbacks = all.order(id: :desc)
