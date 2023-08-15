@@ -26,14 +26,18 @@ class Api::V1::App::UsersController < ApplicationController
   def change_login_info
     raise Errors::BadParameter, t(:wrong_password) unless @current_user.authenticate(login_info_params[:password])
 
-    if login_info_params[:new_password]
+    full_params = login_info_params
+    full_params[:username] = full_params[:username].downcase if full_params[:username]
+    full_params[:email] = full_params[:email].downcase if full_params[:email]
+
+    if full_params[:new_password]
       @current_user.update!(
-        login_info_params.merge(password: login_info_params[:new_password])
-                         .except(:new_password)
+        full_params.merge(password: login_info_params[:new_password])
+                   .except(:new_password)
       )
     else
       @current_user.update!(
-        login_info_params.except(:new_password, :password)
+        full_params.except(:new_password, :password)
       )
     end
 

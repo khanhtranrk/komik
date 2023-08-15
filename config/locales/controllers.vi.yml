@@ -3,6 +3,6 @@ vi:
     wrong_password: Mật khẩu không chính xác!
     email_not_found: Không tìm thấy email này!
     invalid_sign_in_info: Thông tin đăng nhập không chính xác!
-    verification_code_valid: Mã xác thực không chính xác!
+    verification_code_invalid: Mã xác thực không chính xác!
     permission_denied: Bạn không quyền try cập vào tài nguyên này!
     account_locked: Tài khoản của bạn đã bị khóa! Vui lòng liên hệ quản trị viên để được hổ trợ

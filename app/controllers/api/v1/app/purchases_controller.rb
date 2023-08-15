@@ -24,6 +24,7 @@ class Api::V1::App::PurchasesController < ApplicationController
       user_id: @current_user.id,
       plan_id: plan.id,
       price: plan.price,
+      token: purchase_params[:token],
       payment_method: :card
     )
 
@@ -33,7 +34,7 @@ class Api::V1::App::PurchasesController < ApplicationController
 
     Stripe::Charge.create customer: customer.id,
                           amount: plan.price.to_i,
-                          description: 'description',
+                          description: "Payment for plan - PUR#{purchase.id}",
                           currency: 'vnd'
 
     # update purchase
