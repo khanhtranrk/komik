@@ -29,7 +29,4 @@
 /config/master.key
 
 # Ignore .env
-/.env
-
-# Ignore .env
 /.idea
