@@ -20,17 +20,17 @@ class Api::V1::Admin::UsersController < AdministratorController
   end
 
   def create
-    raise Errors::BadParameter, t(:wrong_password) unless @current_user.authenticate(user_params_updatable[:auth_password])
+    full_params = user_params.merge(locked: false)
+    full_params[:username] = full_params[:username].downcase if full_params[:username]
+    full_params[:email] = full_params[:email].downcase if full_params[:email]
 
-    User.create!(user_params.except(:auth_password))
+    User.create!(full_params)
 
     expose
   end
 
   def update
-    raise Errors::BadParameter, t(:wrong_password) unless @current_user.authenticate(user_params_updatable[:auth_password])
-
-    @user.update!(user_params_updatable.except(:auth_password))
+    @user.update!(user_params_updatable)
 
     expose
   end
@@ -45,15 +45,13 @@ class Api::V1::Admin::UsersController < AdministratorController
                   :role,
                   :birthday,
                   :firstname,
-                  :lastname,
-                  :auth_password
+                  :lastname
   end
 
   def user_params_updatable
     params.require(:user)
           .permit :role,
-                  :locked,
-                  :auth_password
+                  :locked
   end
 
   def set_user
