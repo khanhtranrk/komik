@@ -5,7 +5,8 @@ class Api::V1::Admin::ChaptersController < AdministratorController
   before_action :set_chapter, except: %i[index create]
 
   def index
-    chapters = Chapter.where(comic_id: @comic.id)
+    chapters = Chapter.filter(params)
+                      .where(comic_id: @comic.id)
 
     paginate chapters,
              each_serializer: Admin::ChaptersSerializer,

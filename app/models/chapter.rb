@@ -7,5 +7,19 @@ class Chapter < ApplicationRecord
 
   belongs_to :comic
 
+  validates :name, presence: true
+
   has_many :readings, dependent: :destroy
+
+  def self.filter(params)
+    chapters = all
+
+    if params[:query].present?
+      query = params[:query].strip
+
+      chapters = chapters.where('name ILIKE ?', "%#{query}%")
+    end
+
+    chapters
+  end
 end

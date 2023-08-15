@@ -34,15 +34,11 @@ class Category < ApplicationRecord
           categories.name AS name,
           COUNT(comics_categories.id) AS id_comics,
           COALESCE(SUM(sub_comics.views), 0) AS id_views,
-          COALESCE(SUM(sub_comics.likes), 0) AS id_likes,
+          COALESCE(SUM(sub_comics.favorites), 0) AS id_likes,
           COALESCE(CAST(SUM(sub_comics.follows) AS INTEGER), 0) AS id_follows
         FROM categories
         LEFT JOIN comics_categories ON comics_categories.category_id = categories.id
-        LEFT JOIN (
-          SELECT comics.id AS id, views, likes, COUNT(follows.id) AS follows FROM comics
-          LEFT JOIN follows ON follows.comic_id = comics.id
-          GROUP BY comics.id
-        ) AS sub_comics
+        LEFT JOIN (SELECT comics.id AS id, views, favorites, follows FROM comics) AS sub_comics
         ON sub_comics.id = comics_categories.comic_id
         GROUP BY categories.id
       ")

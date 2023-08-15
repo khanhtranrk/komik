@@ -5,8 +5,8 @@ class Api::V1::Admin::ReviewsController < AdministratorController
   before_action :set_review, except: %i[index]
 
   def index
-    paginate @comic.reviews,
-             each_serializer: App::ReviewsSerializer,
+    paginate @comic.reviews.include_evaluate_statistic(@current_user.id),
+             each_serializer: Admin::ReviewsSerializer,
              base_url: request.base_url
   end
 
@@ -23,6 +23,6 @@ class Api::V1::Admin::ReviewsController < AdministratorController
   end
 
   def set_review
-    @review = @comic.reviews.find_by!(id: params[:id], user: @current_user)
+    @review = @comic.reviews.find_by!(id: params[:id])
   end
 end

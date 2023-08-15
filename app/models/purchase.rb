@@ -6,7 +6,7 @@ class Purchase < ApplicationRecord
 
   class << self
     def filter(params)
-      purchases = all.order(id: :asc)
+      purchases = all.order(id: :desc)
 
       if params[:query].present?
         query = params[:query].strip

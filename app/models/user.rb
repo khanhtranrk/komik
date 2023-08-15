@@ -22,9 +22,10 @@ class User < ApplicationRecord
   validates :username,
             :email,
             presence: true
-  validates :username, length: { minimum: 1 }
   validates :username, format: { with: /\A[a-zA-Z0-9_-]+\z/, message: 'chỉ chứa các kí tự chữ cái, chữ số, dấu gạch dưới và dấu gạch ngang' }
-  validates :password, length: { minimum: 4 }
+
+  validates :birthday, timeliness: { on_or_before: lambda { Time.zone.now }, type: :date }
+  validates :birthday, timeliness: { on_or_after: lambda { Time.zone.parse('1900-01-01 00:00:00') }, type: :date }
 
   REQUIRED_ATTRIBUTES = %i[username email password].freeze
 

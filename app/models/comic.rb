@@ -67,7 +67,7 @@ class Comic < ApplicationRecord
 
   def reading_chapter_by(user)
     readings = Reading.where(user:, chapter: chapters)
-                   .order(updated_at: :desc)
+                      .order(updated_at: :desc)
 
     readings.first
   end
