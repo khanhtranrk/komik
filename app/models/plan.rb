@@ -5,6 +5,7 @@ class Plan < ApplicationRecord
 
   validates :name, uniqueness: true
   validates :name, :price, :value, presence: true
+  validates :price, :value, numericality: { greater_than: 0 }
 
   class << self
     def statistics_by_days(year, month, plan_ids, stat_object = :subscriptions)
