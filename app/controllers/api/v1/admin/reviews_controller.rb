@@ -12,14 +12,14 @@ class Api::V1::Admin::ReviewsController < AdministratorController
 
   def destroy
     @review.destroy!
-    
+
     expose
   end
 
   private
 
   def set_comic
-    @comic = Comic.find_by!(id: params[:comic_id], active: true)
+    @comic = Comic.find_by!(id: params[:comic_id])
   end
 
   def set_review
