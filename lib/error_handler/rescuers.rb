@@ -31,14 +31,6 @@ module ErrorHandler
         )
       end
 
-      rescue_from ActiveRecord::DeleteRestrictionError do |e|
-        expose_error(
-          status: :unprocessable_entity,
-          key: :BAD_PARAMETER,
-          message: e.message
-        )
-      end
-
       rescue_from ActionController::ParameterMissing do |e|
         expose_error(
           status: :bad_request,
