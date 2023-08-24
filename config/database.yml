@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: komik_production
-  username: komik
+  username: <%= ENV["KOMIK_DATABASE_USERNAME"] %>
   password: <%= ENV["KOMIK_DATABASE_PASSWORD"] %>
