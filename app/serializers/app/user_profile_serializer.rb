@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class App::UserProfileSerializer < ActiveModel::Serializer
+  include ImageUrlHelper
+
   attributes :firstname,
              :lastname,
              :birthday,
@@ -10,7 +12,7 @@ class App::UserProfileSerializer < ActiveModel::Serializer
              :current_plan
 
   def avatar_url
-    @instance_options[:base_url] + Rails.application.routes.url_helpers.rails_blob_url(object.avatar, only_path: true) if object.avatar.attached?
+    image_url(object.avatar)
   end
 
   def current_plan
