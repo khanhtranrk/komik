@@ -3,8 +3,8 @@
 module ErrorHandler
   module ResponseFormatters
     module Exposer
-      def expose_error(status:, key:, message:, debug: '')
-        render json: { status: 'unsuccess', message:, error: { key:, debug: } },
+      def expose_error(status:, message:, errors:)
+        render json: { message:, errors: },
                status:
       end
     end
