@@ -7,11 +7,11 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "*"
+    origins Rails.env.eql?("production") ? ENV['ALLOW_ORIGINS'] : "*"
 
     resource "*",
       headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head],
-      expose: ['Pagination-Page', 'Pagination-Per-Page', 'Pagination-Total-Pages', 'Pagination-Total-Objects']
+      methods: :any,
+      expose: %w[Pagination-Page Pagination-Per-Page Pagination-Total-Pages Pagination-Total-Objects]
   end
 end
