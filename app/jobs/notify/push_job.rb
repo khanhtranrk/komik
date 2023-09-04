@@ -5,7 +5,7 @@ class Notify::PushJob < ApplicationJob
   sidekiq_options retry: Rails.configuration.contants.sidekig_retry,
                   backtrace: Rails.configuration.contants.sidekig_backtrace
 
-  def perform(user_ids, message, **options)
+  def perform(user_ids, message, **_options)
     # sender = Noti::Exponent.new(message)
     # exponent_tokens = []
 

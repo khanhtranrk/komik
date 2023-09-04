@@ -5,7 +5,7 @@ class Api::V1::App::ChaptersController < ApplicationController
 
   def index
     chapters = Chapter.select('chapters.*', 'BOOL_OR(CASE WHEN readings.id IS NOT NULL THEN true ELSE false END) AS read')
-                      .joins('LEFT JOIN readings ON readings.chapter_id = chapters.id AND readings.user_id = ' + @current_user.id.to_s)
+                      .joins("LEFT JOIN readings ON readings.chapter_id = chapters.id AND readings.user_id = #{@current_user.id}")
                       .group('chapters.id')
                       .where(comic_id: @comic.id)
 

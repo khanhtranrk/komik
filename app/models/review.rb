@@ -3,7 +3,7 @@
 class Review < ApplicationRecord
   default_scope { order(updated_at: :desc) }
 
-  scope :include_evaluate_statistic, ->(user_id) {
+  scope :include_evaluate_statistic, lambda { |user_id|
     select('reviews.*')
       .select(
         'SUM(CASE WHEN evaluates.point_of_view = 1 THEN 1 ELSE 0 END) AS agreement_count'\

@@ -7,4 +7,3 @@ class App::ReviewSerializer < ActiveModel::Serializer
              :created_at,
              :updated_at
 end
-

@@ -3,9 +3,9 @@
 class Comic < ApplicationRecord
   scope :reading_by, lambda { |user_id|
     last_read_case = Arel.sql(<<~SQL)
-      CASE 
-        WHEN A.last_read_at > comics.last_updated_chapter_at THEN A.last_read_at 
-        ELSE comics.last_updated_chapter_at 
+      CASE
+        WHEN A.last_read_at > comics.last_updated_chapter_at THEN A.last_read_at
+        ELSE comics.last_updated_chapter_at
       END
     SQL
 
@@ -78,7 +78,7 @@ class Comic < ApplicationRecord
 
       if params[:release_dates].present?
         release_years = params[:release_dates].split(',').map { |date| DateTime.parse(date).year }
-        comics = comics.where("EXTRACT(YEAR FROM release_date) IN (?)", release_years)
+        comics = comics.where('EXTRACT(YEAR FROM release_date) IN (?)', release_years)
       end
 
       if params[:category_ids].present?

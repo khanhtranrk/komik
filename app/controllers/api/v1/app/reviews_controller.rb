@@ -44,10 +44,10 @@ class Api::V1::App::ReviewsController < ApplicationController
       if eva.point_of_view.eql?(Evaluate.point_of_views.key(point_of_view))
         eva.destroy!
       else
-        eva.update!(point_of_view: point_of_view)
+        eva.update!(point_of_view:)
       end
     else
-      Evaluate.create!(user: @current_user, review: @review, point_of_view: point_of_view)
+      Evaluate.create!(user: @current_user, review: @review, point_of_view:)
     end
 
     expose

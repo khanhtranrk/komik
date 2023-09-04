@@ -35,7 +35,6 @@ end
 
 group :development do
   gem 'solargraph'
-  gem 'rails-erd'
 end
 
 group :test do

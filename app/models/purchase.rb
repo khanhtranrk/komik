@@ -12,10 +12,10 @@ class Purchase < ApplicationRecord
         query = params[:query].strip
 
         purchases = purchases.joins(:users)
-                     .where(
-                       'username ILIKE ? OR email ILIKE ? OR firstname ILIKE ? OR lastname ILIKE ?',
-                       "%#{query}%", "%#{query}%", "%#{query}%", "%#{query}%"
-                      )
+                             .where(
+                               'username ILIKE ? OR email ILIKE ? OR firstname ILIKE ? OR lastname ILIKE ?',
+                               "%#{query}%", "%#{query}%", "%#{query}%", "%#{query}%"
+                             )
       end
 
       if params[:from_date].present? && params[:to_date].present?

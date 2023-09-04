@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::ReviewsSerializer < ActiveModel::Serializer
   attributes :id,
              :title,

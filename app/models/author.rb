@@ -11,8 +11,8 @@ class Author < ApplicationRecord
             :birthday,
             presence: true
 
-  validates :birthday, timeliness: { on_or_before: lambda { Time.zone.now }, type: :date }
-  validates :birthday, timeliness: { on_or_after: lambda { Time.zone.parse('1900-01-01 00:00:00') }, type: :date }
+  validates :birthday, timeliness: { on_or_before: -> { Time.zone.now }, type: :date }
+  validates :birthday, timeliness: { on_or_after: -> { Time.zone.parse('1900-01-01 00:00:00') }, type: :date }
 
   class << self
     def filter(params)

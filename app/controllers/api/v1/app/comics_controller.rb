@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::App::ComicsController < ApplicationController
-  before_action :set_comic, except: %i[index show liked followed read]
+  before_action :set_comic, except: %i[index show favorited followed read]
 
   def index
     comics = Comic.filter(params)
