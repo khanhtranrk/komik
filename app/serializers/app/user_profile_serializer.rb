@@ -12,7 +12,7 @@ class App::UserProfileSerializer < ActiveModel::Serializer
              :current_plan
 
   def avatar_url
-    image_url(object.avatar)
+    make_image_url(@instance_options[:base_url], object.avatar)
   end
 
   def current_plan

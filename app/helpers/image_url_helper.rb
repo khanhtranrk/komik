@@ -4,7 +4,7 @@ module ImageUrlHelper
   extend ActiveSupport::Concern
 
   included do
-    def image_url(base_url, subject)
+    def make_image_url(base_url, subject)
       case ENV['RAILS_ENV']
       when 'development'
         base_url + Rails.application.routes.url_helpers.rails_blob_url(subject, only_path: true) if subject.attached?

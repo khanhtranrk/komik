@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Admin::ComicSerializer < ActiveModel::Serializer
+  include ImageUrlHelper
+
   attributes :id,
              :name,
              :other_names,
@@ -16,7 +18,7 @@ class Admin::ComicSerializer < ActiveModel::Serializer
              :image_url
 
   def image_url
-    @instance_options[:base_url] + Rails.application.routes.url_helpers.rails_blob_url(object.image, only_path: true) if object.image.attached?
+    make_image_url(@instance_options[:base_url], object.image)
   end
 
   def categories

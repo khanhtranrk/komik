@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class App::ChapterSerializer < ActiveModel::Serializer
+  include ImageUrlHelper
+
   attributes :id,
              :name,
              :free,
@@ -12,7 +14,7 @@ class App::ChapterSerializer < ActiveModel::Serializer
 
   def image_urls
     object.images.map do |image|
-      @instance_options[:base_url] + Rails.application.routes.url_helpers.rails_blob_url(image, only_path: true)
+      make_image_url(@instance_options[:base_url], image)
     end
   end
 

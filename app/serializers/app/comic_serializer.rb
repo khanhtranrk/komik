@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class App::ComicSerializer < ActiveModel::Serializer
+  include ImageUrlHelper
+
   attributes :id,
              :name,
              :other_names,
@@ -20,7 +22,7 @@ class App::ComicSerializer < ActiveModel::Serializer
   attribute :reading_chapter, if: :current_user?
 
   def image_url
-    @instance_options[:base_url] + Rails.application.routes.url_helpers.rails_blob_url(object.image, only_path: true) if object.image.attached?
+    make_image_url(@instance_options[:base_url], object.image)
   end
 
   def current_user?
