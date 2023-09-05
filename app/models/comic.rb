@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Comic < ApplicationRecord
+  include Slugable
+  slugify :name
+
   scope :reading_by, lambda { |user_id|
     last_read_case = Arel.sql(<<~SQL)
       CASE

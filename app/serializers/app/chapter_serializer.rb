@@ -13,9 +13,7 @@ class App::ChapterSerializer < ActiveModel::Serializer
              :previous_chapter
 
   def image_urls
-    object.images.map do |image|
-      make_image_url(@instance_options[:base_url], image)
-    end
+    make_image_urls(@instance_options[:base_url], object.images)
   end
 
   def next_chapter

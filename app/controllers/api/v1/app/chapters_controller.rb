@@ -46,6 +46,6 @@ class Api::V1::App::ChaptersController < ApplicationController
   private
 
   def set_comic
-    @comic = Comic.find(params[:comic_id])
+    @comic = Comic.find_by!(slug: params[:comic_id])
   end
 end

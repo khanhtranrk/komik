@@ -21,6 +21,8 @@ gem 'rails', '~> 7.0.4'
 gem 'rails-i18n'
 gem 'sidekiq', '~>6.0.0'
 gem 'stripe'
+gem 'unicode'
+gem 'unidecoder'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'validates_timeliness', '~> 7.0.0.beta1'
 
