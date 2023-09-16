@@ -10,6 +10,8 @@ module ImageUrlHelper
         base_url + Rails.application.routes.url_helpers.rails_blob_url(subject, only_path: true) if subject.attached?
       when 'production'
         subject.url if subject.attached?
+      when 'test'
+        subject.url if subject.attached?
       else
         raise 'ENV["RAILS_ENV"] is not set'
       end
