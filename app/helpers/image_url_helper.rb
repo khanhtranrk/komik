@@ -16,5 +16,24 @@ module ImageUrlHelper
         raise 'ENV["RAILS_ENV"] is not set'
       end
     end
+
+    def make_image_urls(base_url, subjects)
+      case ENV['RAILS_ENV']
+      when 'production'
+        subjects.map do |subject|
+          subject.url
+        end
+      when 'development'
+        subjects.map do |subject|
+          base_url + Rails.application.routes.url_helpers.rails_blob_url(subject, only_path: true)
+        end
+      when 'test'
+        subjects.map do |subject|
+          base_url + Rails.application.routes.url_helpers.rails_blob_url(subject, only_path: true)
+        end
+      else
+        raise 'ENV["RAILS_ENV"] is not set'
+      end
+    end
   end
 end
