@@ -33,13 +33,13 @@ class App::ComicsSerializer < ActiveModel::Serializer
     ActiveModelSerializers::SerializableResource.new(
       object.categories,
       each_serializer: App::CategoriesSerializer
-    )
+    ).as_json
   end
 
   def authors
     ActiveModelSerializers::SerializableResource.new(
       object.authors,
       each_serializer: App::AuthorsSerializer
-    )
+    ).as_json
   end
 end

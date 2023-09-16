@@ -2,7 +2,9 @@
 
 class Api::V1::App::CategoriesController < ApplicationController
   def index
-    expose Category.all.order(name: :asc),
-           each_serializer: App::CategoriesSerializer
+    sara :categories do |options|
+      options[:each_serializer] = App::CategoriesSerializer
+      Category.all.order(name: :asc)
+    end
   end
 end

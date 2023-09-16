@@ -2,7 +2,9 @@
 
 class Api::V1::App::PlansController < ApplicationController
   def index
-    expose Plan.all,
-           each_serializer: App::PlansSerializer
+    sara :plans do |options|
+      options[:each_serializer] = App::PlansSerializer
+      Plan.all
+    end
   end
 end
