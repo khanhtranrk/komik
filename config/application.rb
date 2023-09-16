@@ -24,7 +24,6 @@ module Komik
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-
     # config i18n
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     config.i18n.available_locales = [:en, :vi]

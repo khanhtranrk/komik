@@ -95,4 +95,13 @@ Rails.application.configure do
     authentication: "login",
     enable_starttls_auto: true
   }
+
+  # Cache
+  config.cache_store = :redis_cache_store, {
+    url: ENV["REDIS_URL"],
+    error_handler: -> (method:, returning:, exception:) {
+      Raven.capture_exception exception, level: 'warning',
+                              tags: { method: method, returning: returning }
+    }
+  }
 end
