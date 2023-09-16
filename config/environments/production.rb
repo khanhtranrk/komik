@@ -97,11 +97,8 @@ Rails.application.configure do
   }
 
   # Cache
+  config.action_controller.perform_caching = true
   config.cache_store = :redis_cache_store, {
-    url: ENV["REDIS_URL"],
-    error_handler: -> (method:, returning:, exception:) {
-      Raven.capture_exception exception, level: 'warning',
-                              tags: { method: method, returning: returning }
-    }
+    url: ENV["REDIS_URL"]
   }
 end
