@@ -9,7 +9,6 @@ class Author < ApplicationRecord
   validates :firstname,
             :lastname,
             :birthday,
-            :introduction,
             presence: true
 
   validates :birthday, timeliness: { on_or_before: -> { Time.zone.now }, type: :date }
