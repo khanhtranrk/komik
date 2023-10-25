@@ -60,7 +60,7 @@ class Api::V1::App::PurchasesController < ApplicationController
 
     expose_error message: e.message,
                  status: :payment_required,
-                 key: :PAYMENT_REQUIRED
+                 errors: e
   end
 
   private
