@@ -17,7 +17,7 @@ class Api::V1::App::ComicsController < ApplicationController
 
   def show
     comic = Comic.includes(:categories, :chapters, :authors)
-                 .find_by!(id: params[:id], active: true)
+                 .find_by!(slug: params[:id], active: true)
 
     expose comic,
            serializer: App::ComicSerializer,
@@ -92,6 +92,6 @@ class Api::V1::App::ComicsController < ApplicationController
   private
 
   def set_comic
-    @comic = Comic.find_by(id: params[:id], active: true)
+    @comic = Comic.find_by(slug: params[:id], active: true)
   end
 end

@@ -4,6 +4,7 @@ class App::ComicSerializer < ActiveModel::Serializer
   include ImageUrlHelper
 
   attributes :id,
+             :slug,
              :name,
              :other_names,
              :authors,

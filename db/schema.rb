@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_04_160047) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_05_081213) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,6 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_04_160047) do
     t.string "lastname", null: false
     t.datetime "birthday", null: false
     t.text "introduction", null: false
+    t.string "pseudonym", default: "", null: false
   end
 
   create_table "authors_comics", force: :cascade do |t|
@@ -69,7 +70,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_04_160047) do
     t.bigint "comic_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
     t.index ["comic_id"], name: "index_chapters_on_comic_id"
+    t.index ["slug"], name: "index_chapters_on_slug", unique: true
   end
 
   create_table "comics", force: :cascade do |t|
@@ -86,6 +89,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_04_160047) do
     t.boolean "active", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
+    t.index ["slug"], name: "index_comics_on_slug", unique: true
   end
 
   create_table "comics_categories", force: :cascade do |t|

@@ -61,7 +61,7 @@ class Api::V1::App::ReviewsController < ApplicationController
   end
 
   def set_comic
-    @comic = Comic.find_by!(id: params[:comic_id], active: true)
+    @comic = Comic.find_by!(slug: params[:comic_id], active: true)
   end
 
   def set_review
